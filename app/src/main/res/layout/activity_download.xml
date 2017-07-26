@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.stasbar.concurrency.DownloadActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editTextUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Image URL"
+                android:inputType="textUri" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupImageType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tooltipText="Download as">
+
+                <RadioButton
+                    android:id="@+id/radioButtonBitmap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Bitmap" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonDrawable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Drawable" />
+            </RadioGroup>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/downloadViaStartedService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Broadcast Receiver" />
+
+                <Button
+                    android:id="@+id/downloadViaBroadcast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Broadcast Receiver" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/downloadDeferred"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Deferred in time" />
+
+                    <EditText
+                        android:id="@+id/etDeferredTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Deferred time in [sec]"
+                        android:inputType="number"
+                        android:text="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true" />
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabClean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="32dp"
+        android:src="@drawable/ic_clear" />
+</android.support.design.widget.CoordinatorLayout>

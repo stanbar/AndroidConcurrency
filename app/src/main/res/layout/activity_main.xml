@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.stasbar.concurrency.MainActivity">
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ImageDownloader"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+    <Button
+        android:layout_margin="8dp"
+        android:text="buttonStartedImageDownloader"
+        android:id="@+id/buttonStartedImageDownloader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Started Service"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+    <Button
+        android:layout_margin="8dp"
+        android:text="buttonStartedServices"
+        android:id="@+id/buttonStartedServices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="Bound Service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+    <Button
+        android:layout_margin="8dp"
+        android:text="Bounded via Local"
+        android:id="@+id/buttonBoundedLocalService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_margin="8dp"
+        android:text="Bounded via Messenger"
+        android:id="@+id/buttonBoundedViaMessenger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

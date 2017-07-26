@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.stasbar.concurrency">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".started.StartedServicesActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".LoggingService"
+            android:exported="false" />
+        <service android:name=".MediaService" />
+        <service android:name=".DownloadService" />
+        <service android:name=".DownloadIntentService" />
+        <service android:name=".DeferredDownloadService" />
+
+        <activity android:name=".ViewImageActivity" />
+        <activity
+            android:name=".bounded.local.BoundLocalActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".DownloadActivity"
+            android:label="Download Image"
+            android:parentActivityName=".MainActivity" />
+
+        <service
+            android:name=".bounded.local.LocalService"
+            android:exported="false" />
+
+        <!-- Bounded via Messenger -->
+        <activity
+            android:name=".bounded.messenger.BoundViaMessengerActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <service
+            android:name=".bounded.messenger.MessengerService"
+            android:enabled="true" />
+
+        <!-- Bounded via Binder -->
+        <activity
+            android:name=".bounded.binder.BoundViaBinderActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <service
+            android:name=".bounded.binder.KeyGenService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.stasbar.concurrency.bounded.binder.KeyGenService" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".ThreadsActivity"
+            android:label="@string/title_activity_threads"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.stasbar.concurrency.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>
