@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.stasbar.concurrency.caching.CacheActivity">
+
+    <Button
+        android:id="@+id/btnLoadObjectsToCache"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load Objects to cache"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnClearCache"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Force To Clear Cache"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLoadObjectsToCache" />
+
+    <Button
+        android:id="@+id/btnReadCache"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Read From Cache"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnClearCache" />
+
+    <com.stasbar.concurrency.view.LogView
+        android:id="@+id/logger"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>
