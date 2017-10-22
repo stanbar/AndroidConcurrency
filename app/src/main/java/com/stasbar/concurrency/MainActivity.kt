@@ -6,6 +6,8 @@ import android.os.Bundle
 import com.stasbar.concurrency.bounded.local.BoundLocalActivity
 import com.stasbar.concurrency.bounded.messenger.BoundViaMessengerActivity
 import com.stasbar.concurrency.caching.CacheActivity
+import com.stasbar.concurrency.java_concurrency.JavaConcurencyActivity
+import com.stasbar.concurrency.java_concurrency.ProducerConsumerActivity
 import com.stasbar.concurrency.started.StartedServicesActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -19,6 +21,10 @@ class MainActivity : AppCompatActivity() {
         buttonBoundedLocalService.setOnClickListener { startActivity(Intent(this, BoundLocalActivity::class.java)) }
         buttonBoundedViaMessenger.setOnClickListener { startActivity(Intent(this, BoundViaMessengerActivity::class.java))}
         buttonCache.setOnClickListener { startActivity(Intent(this, CacheActivity::class.java))}
+        buttonJavaConcurrency.setOnClickListener{ startActivity(Intent(this, JavaConcurencyActivity::class.java)) }
+        buttonProducerConsumer.setOnClickListener{ startActivity(Intent(this, ProducerConsumerActivity::class.java)) }
+
+
 
     }
 }

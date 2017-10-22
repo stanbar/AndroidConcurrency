@@ -11,13 +11,15 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.toast
 import java.util.*
 import android.widget.TextView
+import com.stasbar.concurrency.LoggableActivity
 import org.jetbrains.anko.coroutines.experimental.bg
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
 
-class CacheActivity : AppCompatActivity() {
+class CacheActivity : LoggableActivity() {
+    override fun getLogger() = logger
     /**
      * SoftReference is a wrapper for an object
      * If all the references ti that object are soft references and
@@ -62,9 +64,4 @@ class CacheActivity : AppCompatActivity() {
 
     }
 
-
-
-    fun log(message: String) {
-        logger.log(message)
-    }
 }

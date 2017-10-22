@@ -10,7 +10,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import android.content.Context.MODE_PRIVATE
 import java.nio.channels.Channel
-import android.support.v4.app.NotificationCompat.getChannel
 import android.util.Log
 import java.io.*
 import java.nio.file.Files
