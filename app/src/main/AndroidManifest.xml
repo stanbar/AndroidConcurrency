@@ -91,7 +91,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.stasbar.concurrency.MainActivity" />
         </activity>
-        <activity android:name=".java_concurrency.ProducerConsumerActivity"></activity>
+        <activity android:name=".java_concurrency.ProducerConsumerActivity" />
+        <activity android:name=".database.DBActivity"></activity>
     </application>
 
 </manifest>

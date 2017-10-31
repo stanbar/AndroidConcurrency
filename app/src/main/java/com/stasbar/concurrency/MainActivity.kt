@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.stasbar.concurrency.bounded.local.BoundLocalActivity
 import com.stasbar.concurrency.bounded.messenger.BoundViaMessengerActivity
 import com.stasbar.concurrency.caching.CacheActivity
+import com.stasbar.concurrency.database.DBActivity
 import com.stasbar.concurrency.java_concurrency.JavaConcurencyActivity
 import com.stasbar.concurrency.java_concurrency.ProducerConsumerActivity
 import com.stasbar.concurrency.started.StartedServicesActivity
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         buttonCache.setOnClickListener { startActivity(Intent(this, CacheActivity::class.java))}
         buttonJavaConcurrency.setOnClickListener{ startActivity(Intent(this, JavaConcurencyActivity::class.java)) }
         buttonProducerConsumer.setOnClickListener{ startActivity(Intent(this, ProducerConsumerActivity::class.java)) }
+        buttonDatabase.setOnClickListener{ startActivity(Intent(this, DBActivity::class.java)) }
 
 
 
