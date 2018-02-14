@@ -96,8 +96,15 @@
         <activity android:name=".java_concurrency.ProducerConsumerActivity" />
         <activity android:name=".database.DBActivity" />
         <activity android:name=".contentResolver.ContentResolverActivity" />
+
+        <provider
+            android:name=".contentProvider.MyContentProvider"
+            android:authorities="com.stasbar.concurrency"
+            android:exported="false"
+            android:process=":remote" />
+
         <activity
-            android:name=".contentProvider.ContactProviderDemoActivity"
+            android:name=".contentProvider.sync.ContactProviderSyncActivity"
             android:label="@string/title_activity_contact_provider_demo"
             android:parentActivityName="android.app.ListActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -105,12 +112,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.ListActivity" />
         </activity>
-        
-        <provider
-            android:exported="false"
-            android:process=":remote"
-            android:authorities="com.stasbar.concurrency"
-            android:name=".contentProvider.MyCP"/>
+        <activity
+            android:name=".contentProvider.async.ContactProviderAsyncActivity"
+            android:label="@string/title_activity_contact_provider_async"
+            android:parentActivityName="android.app.ListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.app.ListActivity" />
+        </activity>
     </application>
 
 </manifest>
