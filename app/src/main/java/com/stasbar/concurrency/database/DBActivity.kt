@@ -1,28 +1,70 @@
 package com.stasbar.concurrency.database
 
+import android.content.ContentProviderOperation
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.CursorAdapter.FLAG_AUTO_REQUERY
 import android.support.v4.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
 import android.widget.SimpleCursorAdapter
 import com.stasbar.concurrency.R
+import com.stasbar.concurrency.database.ArtistDatabaseHelper.Companion.DB_NAME
 import kotlinx.android.synthetic.main.activity_db.*
 
 class DBActivity : AppCompatActivity() {
-
+    companion object {
+        lateinit var db: SQLiteDatabase
+        const val ARTISTS_TABLE = "artists"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_db)
+        val cr = contentResolver
         val dbHelper = ArtistDatabaseHelper(applicationContext)
         db = dbHelper.writableDatabase
         insertArtists()
         deletePih()
-        val c = readArtists()
+
+        var c = readArtists()
         displayArtists(c)
 
+        insertMurzyn(cr)
+        c = readArtists()
+        displayArtists(c)
+
+        applyBatchOf3w(cr)
+
+        readArtists(cr)
+    }
+
+    private fun applyBatchOf3w(cr: ContentResolver) {
+        val uri = Uri.parse("content://$DB_NAME/$ARTISTS_TABLE")
+        val authority = "me"
+        val operationMurzyn = ContentProviderOperation.newInsert(uri).withValue("name", "MurzynZDR").build()
+        val operationDobo = ContentProviderOperation.newInsert(uri).withValue("name", "MurzynZDR").build()
+        val operationTPS = ContentProviderOperation.newInsert(uri).withValue("name", "MurzynZDR").build()
+        val operationWieszak = ContentProviderOperation.newInsert(uri).withValue("name", "MurzynZDR").build()
+        val operations = arrayListOf(operationDobo, operationMurzyn, operationTPS, operationWieszak)
+        cr.applyBatch(authority, operations)
+    }
+
+    private fun insertMurzyn(cr: ContentResolver) {
+        val uri = Uri.parse("content://$DB_NAME/$ARTISTS_TABLE")
+        val values = ContentValues()
+        values.put("name", "Murzyn")
+        cr.insert(uri, values)
+    }
+
+    private fun readArtists(cr: ContentResolver): Cursor {
+        val uri = Uri.parse("content://$DB_NAME/$ARTISTS_TABLE")
+        val selection: String? = null
+        val selectionArgs: Array<String?>? = null
+        val sortOrder: String? = null
+        return cr.query(uri, arrayOf("_id", "name"), selection, selectionArgs, sortOrder)
     }
 
     private fun insertArtists() {
@@ -64,8 +106,5 @@ class DBActivity : AppCompatActivity() {
 
     }
 
-    companion object {
-        lateinit var db: SQLiteDatabase
-        const val ARTISTS_TABLE = "artists"
-    }
+
 }

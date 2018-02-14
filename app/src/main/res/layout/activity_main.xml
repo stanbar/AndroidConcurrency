@@ -116,6 +116,34 @@
             android:layout_margin="8dp"
             android:text="DatabaseActivity" />
 
+        <!--ContentResolver-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ContentResolver Activity"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+        <Button
+            android:id="@+id/buttonContentResolver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="ContentResolverActivity" />
+
+        <!--ContentProvider -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ContentProvider Activity"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+        <Button
+            android:id="@+id/buttonContentProvider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="ContentProviderActivity" />
+
 
     </LinearLayout>
 </ScrollView>

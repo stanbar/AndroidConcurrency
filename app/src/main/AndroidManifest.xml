@@ -3,6 +3,8 @@
     package="com.stasbar.concurrency">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -92,7 +94,23 @@
                 android:value="com.stasbar.concurrency.MainActivity" />
         </activity>
         <activity android:name=".java_concurrency.ProducerConsumerActivity" />
-        <activity android:name=".database.DBActivity"></activity>
+        <activity android:name=".database.DBActivity" />
+        <activity android:name=".contentResolver.ContentResolverActivity" />
+        <activity
+            android:name=".contentProvider.ContactProviderDemoActivity"
+            android:label="@string/title_activity_contact_provider_demo"
+            android:parentActivityName="android.app.ListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.app.ListActivity" />
+        </activity>
+        
+        <provider
+            android:exported="false"
+            android:process=":remote"
+            android:authorities="com.stasbar.concurrency"
+            android:name=".contentProvider.MyCP"/>
     </application>
 
 </manifest>
