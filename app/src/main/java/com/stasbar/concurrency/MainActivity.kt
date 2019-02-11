@@ -1,8 +1,8 @@
 package com.stasbar.concurrency
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.stasbar.concurrency.bounded.local.BoundLocalActivity
 import com.stasbar.concurrency.bounded.messenger.BoundViaMessengerActivity
 import com.stasbar.concurrency.caching.CacheActivity
@@ -13,7 +13,9 @@ import com.stasbar.concurrency.database.DBActivity
 import com.stasbar.concurrency.java_concurrency.JavaConcurencyActivity
 import com.stasbar.concurrency.java_concurrency.ProducerConsumerActivity
 import com.stasbar.concurrency.started.StartedServicesActivity
+import com.stasbar.concurrency.threadsocket.LocalSocketActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         buttonContentResolver.setOnClickListener{ startActivity(Intent(this, ContentResolverActivity::class.java)) }
         buttonContentProviderSync.setOnClickListener{ startActivity(Intent(this, ContactProviderSyncActivity::class.java)) }
         buttonContentProviderAsync.setOnClickListener{ startActivity(Intent(this, ContactProviderAsyncActivity::class.java)) }
-
-
-
+        buttonLocalSocket.setOnClickListener { startActivity<LocalSocketActivity>() }
     }
 }

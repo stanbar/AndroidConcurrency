@@ -2,17 +2,15 @@ package com.stasbar.concurrency.contentResolver
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
-import android.widget.SimpleCursorAdapter
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.stasbar.concurrency.R
 import kotlinx.android.synthetic.main.activity_content_resolver.*
-import java.security.Permissions
 
 class ContentResolverActivity : AppCompatActivity() {
 

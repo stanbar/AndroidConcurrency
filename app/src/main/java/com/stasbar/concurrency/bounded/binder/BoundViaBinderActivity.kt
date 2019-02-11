@@ -4,9 +4,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import androidx.appcompat.app.AppCompatActivity
 import com.stasbar.concurrency.R
 import com.stasbar.concurrency.aidl.KeyGenerator
 import com.stasbar.concurrency.aidl.KeyGeneratorCallback
@@ -30,9 +30,9 @@ class BoundViaBinderActivity : AppCompatActivity() {
     val callback = object : KeyGeneratorCallback.Stub() {
 
         override fun sendKey(key: String?) {
-            runOnUiThread({
+            runOnUiThread {
                 buttonGenerateUUID.text = key
-            })
+            }
         }
 
     }

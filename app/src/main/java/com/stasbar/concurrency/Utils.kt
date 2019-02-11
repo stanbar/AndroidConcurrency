@@ -2,10 +2,10 @@ package com.stasbar.concurrency
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.support.v4.app.FragmentActivity
-import android.support.v4.util.TimeUtils
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import androidx.core.util.TimeUtils
+import androidx.fragment.app.FragmentActivity
 
 /**
  * Created by stasbar on 09.07.2017

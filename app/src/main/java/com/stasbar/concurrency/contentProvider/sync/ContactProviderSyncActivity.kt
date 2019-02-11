@@ -3,19 +3,15 @@ package com.stasbar.concurrency.contentProvider.sync
 import android.app.ListActivity
 import android.content.ContentResolver
 import android.content.ContentValues
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.SimpleAdapter
 import com.stasbar.concurrency.R
 import com.stasbar.concurrency.contentProvider.Feed
 import com.stasbar.concurrency.contentProvider.FeedReaderContract
 import com.stasbar.concurrency.contentProvider.MyContentProvider
-import org.jetbrains.anko.sdk25.coroutines.onItemClick
-import org.jetbrains.anko.sdk25.coroutines.onItemLongClick
 import java.util.*
 
 
@@ -31,11 +27,12 @@ class ContactProviderSyncActivity : ListActivity() {
         query()
 
 
-        listView.onItemClick { adapter, view, position, id ->
+        listView.setOnItemClickListener { adapter, view, position, id ->
             delete(position)
         }
-        listView.onItemLongClick { adapter, view, position, id ->
+        listView.setOnItemLongClickListener { adapter, view, position, id ->
             update(position)
+            true
         }
     }
 

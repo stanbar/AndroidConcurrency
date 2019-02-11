@@ -11,10 +11,10 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.*
-import android.support.v7.app.AppCompatActivity
-import android.support.v4.util.TimeUtils
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.TimeUtils
 import kotlinx.android.synthetic.main.activity_download.*
 import java.io.File
 

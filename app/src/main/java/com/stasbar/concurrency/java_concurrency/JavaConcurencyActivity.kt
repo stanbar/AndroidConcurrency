@@ -1,16 +1,11 @@
 package com.stasbar.concurrency.java_concurrency
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.stasbar.concurrency.LoggableActivity
 import com.stasbar.concurrency.R
-import com.stasbar.concurrency.data.Transacton
-import com.stasbar.concurrency.view.LogView
 import kotlinx.android.synthetic.main.activity_java_concurency.*
-import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executor
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.system.measureNanoTime
 

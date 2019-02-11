@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.TimeUtils;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -49,7 +48,7 @@ public class LogView extends ScrollView {
             mTextView.append("\n");
         }
         StringBuilder builder = new StringBuilder();
-        android.support.v4.util.TimeUtils.formatDuration(elapsedTime, builder);
+        androidx.core.util.TimeUtils.formatDuration(elapsedTime, builder);
         String formattedLog = String.format(Locale.getDefault(), "%s: %s", builder.toString(), message);
         mTextView.append(formattedLog);
     }

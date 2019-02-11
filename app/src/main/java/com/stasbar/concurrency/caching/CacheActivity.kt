@@ -1,21 +1,11 @@
 package com.stasbar.concurrency.caching
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Process
+import com.stasbar.concurrency.LoggableActivity
 import com.stasbar.concurrency.R
 import com.stasbar.concurrency.Square
 import kotlinx.android.synthetic.main.activity_cache.*
-import org.jetbrains.anko.longToast
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.toast
-import java.util.*
-import android.widget.TextView
-import com.stasbar.concurrency.LoggableActivity
-import org.jetbrains.anko.coroutines.experimental.bg
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 
 
 class CacheActivity : LoggableActivity() {

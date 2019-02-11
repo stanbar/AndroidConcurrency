@@ -1,7 +1,7 @@
 package com.stasbar.concurrency
 
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.stasbar.concurrency.view.LogView
 
 /**

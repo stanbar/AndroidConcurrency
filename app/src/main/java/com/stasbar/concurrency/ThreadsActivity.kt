@@ -1,7 +1,7 @@
 package com.stasbar.concurrency
 
 import android.os.*
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_threads.*
 
 

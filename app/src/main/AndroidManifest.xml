@@ -13,6 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".threadsocket.LocalSocketService"
+            android:enabled="true"
+            android:exported="true"
+            android:process="com.stasbar.concurrency.service.localsocket"></service>
+
+        <activity android:name=".threadsocket.LocalSocketActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,18 +52,14 @@
 
         <service
             android:name=".bounded.local.LocalService"
-            android:exported="false" />
-
-        <!-- Bounded via Messenger -->
+            android:exported="false" /> <!-- Bounded via Messenger -->
         <activity
             android:name=".bounded.messenger.BoundViaMessengerActivity"
             android:parentActivityName=".MainActivity" />
 
         <service
             android:name=".bounded.messenger.MessengerService"
-            android:enabled="true" />
-
-        <!-- Bounded via Binder -->
+            android:enabled="true" /> <!-- Bounded via Binder -->
         <activity
             android:name=".bounded.binder.BoundViaBinderActivity"
             android:parentActivityName=".MainActivity" />
