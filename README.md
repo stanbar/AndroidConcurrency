@@ -1,8 +1,10 @@
-# AndroidConcurrency
-Demo presenting many Android Concurency Techniques
+# Android IPC and Multi-Threading
+Demo presenting many Android IPC and Multi-threading Communication Techniques
+
 Using: 
 - BoundServices 
 - AIDL 
+- LocalSocket
 - Messengers
 - Handlers
 - Loopers
