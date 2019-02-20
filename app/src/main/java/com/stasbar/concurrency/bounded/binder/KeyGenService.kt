@@ -13,17 +13,16 @@ class KeyGenService : Service() {
 
     private val mBinder: KeyGenerator.Stub = object : KeyGenerator.Stub() {
         override fun setCallback(callback: KeyGeneratorCallback) {
-            var id: UUID?
-            synchronized(keys) {
+            val id = synchronized(keys) {
+                var id: UUID
                 do {
                     id = UUID.randomUUID()
                 } while (keys.contains(id))
-                keys += id!!
+                keys = keys + id
+                id
             }
-            val key = id.toString()
-            callback.sendKey(key)
+            callback.sendKey(id.toString())
         }
-
     }
 
     override fun onBind(intent: Intent): IBinder? {
