@@ -1,26 +1,23 @@
 package com.stasbar.concurrency.java_concurrency
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.PersistableBundle
 import android.util.Log
 import android.util.LogPrinter
-import android.util.Printer
 import com.stasbar.concurrency.LoggableActivity
 import com.stasbar.concurrency.R
-import com.stasbar.concurrency.data.Transacton
+import com.stasbar.concurrency.data.Transaction
 import kotlinx.android.synthetic.main.activity_producer_consumer.*
 import java.math.BigDecimal
 import java.util.*
-import java.util.concurrent.*
-import kotlin.concurrent.thread
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Semaphore
 
 class ProducerConsumerActivity : LoggableActivity() {
     override fun getLogger() = logger
-    val queue: LinkedList<Transacton> = object : LinkedList<Transacton>() {
-        override fun addLast(e: Transacton?) {
+    val queue: LinkedList<Transaction> = object : LinkedList<Transaction>() {
+        override fun addLast(e: Transaction?) {
             super.addLast(e)
             synchronized(this) {
                 (this as Object).notifyAll()
@@ -61,7 +58,11 @@ class ProducerConsumerActivity : LoggableActivity() {
             while (true) {
 
                 producerHandler.post {
-                    val transcation = Transacton(UUID.randomUUID().toString(), UUID.randomUUID().toString(), BigDecimal(rand.nextDouble()))
+                    val transcation = Transaction(
+                        UUID.randomUUID().toString(),
+                        UUID.randomUUID().toString(),
+                        BigDecimal(rand.nextDouble())
+                    )
                     queue.addLast(transcation)
                 }
 
@@ -81,7 +82,7 @@ class ProducerConsumerActivity : LoggableActivity() {
                 while (true) {
 
                     producerHandler.post {
-                        var transction: Transacton? = null
+                        var transction: Transaction? = null
                         synchronized(queue) {
                             while (queue.isEmpty()) {
                                 log("Waiting for new product")

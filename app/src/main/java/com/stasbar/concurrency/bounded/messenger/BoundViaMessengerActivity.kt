@@ -26,7 +26,6 @@ class BoundViaMessengerActivity : AppCompatActivity() {
                 else -> super.handleMessage(msg)
             }
         }
-
     }
 
     private var mBound: Boolean = false

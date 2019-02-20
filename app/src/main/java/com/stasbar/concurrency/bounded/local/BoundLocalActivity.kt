@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_bound.*
 class BoundLocalActivity : AppCompatActivity() {
     var mBound: Boolean = false
     lateinit var mService: LocalService
-    val conn = object : ServiceConnection {
+    private val conn = object : ServiceConnection {
         override fun onServiceDisconnected(p0: ComponentName?) {
             mBound = false
         }
@@ -46,6 +46,4 @@ class BoundLocalActivity : AppCompatActivity() {
     private fun onButtonClick() {
         if (mBound) buttonNextRand.text = mService.getRand().toString()
     }
-
-
 }

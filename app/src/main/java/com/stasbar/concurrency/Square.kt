@@ -6,10 +6,10 @@ import java.util.*
  * Created by stasbar on 27.07.2017
  */
 class Square private constructor(builder: Builder) {
-    val width: Int
-    val height: Int
-    val area: Int
-    val key : String
+    private val width: Int
+    private val height: Int
+    private val area: Int
+    private val key: String
     init {
         key = builder.key
         width = builder.width

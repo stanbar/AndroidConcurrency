@@ -11,7 +11,7 @@ import android.util.Log
  */
 class LoggingService : IntentService("LoggingService") {
     companion object {
-        val LOG_KEY = "LOG_MSG"
+        const val LOG_KEY = "LOG_MSG"
         fun log(context : Context, message : String){
             val intent = Intent(context, LoggingService::class.java)
             intent.putExtra(LOG_KEY,message)

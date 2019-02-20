@@ -9,8 +9,7 @@ import com.stasbar.concurrency.view.LogView
  */
 abstract class LoggableActivity : AppCompatActivity(){
     abstract fun getLogger() : LogView
-    val handler = Handler()
-
+    private val handler = Handler()
 
     protected fun log(message: String) {
         val threadName = Thread.currentThread().name

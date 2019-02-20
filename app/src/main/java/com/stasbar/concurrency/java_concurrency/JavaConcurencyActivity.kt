@@ -3,6 +3,7 @@ package com.stasbar.concurrency.java_concurrency
 import android.os.Bundle
 import com.stasbar.concurrency.LoggableActivity
 import com.stasbar.concurrency.R
+import com.stasbar.concurrency.view.LogView
 import kotlinx.android.synthetic.main.activity_java_concurency.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executor
@@ -10,7 +11,7 @@ import java.util.concurrent.Executors
 import kotlin.system.measureNanoTime
 
 class JavaConcurencyActivity : LoggableActivity() {
-    override fun getLogger() = logger
+    override fun getLogger(): LogView = logger
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,16 +28,13 @@ class JavaConcurencyActivity : LoggableActivity() {
                     it / it
                 }
             }
-
             val time = time(Executors.newFixedThreadPool(threadPool), threadPool, action)
             log("Process took $time ns")
         }
-
-
     }
 
 
-    fun time(executor: Executor, concurrency: Int, action: () -> Unit): Long {
+    private fun time(executor: Executor, concurrency: Int, action: () -> Unit): Long {
 
         val ready = CountDownLatch(concurrency)
         val start = CountDownLatch(1)

@@ -1,18 +1,14 @@
 package com.stasbar.concurrency
 
 import android.app.IntentService
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
+import android.util.Log
+import java.io.File
+import java.io.FileOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
-import android.content.Context.MODE_PRIVATE
-import java.nio.channels.Channel
-import android.util.Log
-import java.io.*
-import java.nio.file.Files
 
 
 /**
@@ -39,7 +35,7 @@ class DownloadIntentService : IntentService("DownloadIntentService") {
     }
 
 
-    fun saveImageIntoFile(src: String) {
+    private fun saveImageIntoFile(src: String) {
         try {
             val url = URL(src)
             val connection = url.openConnection() as HttpURLConnection

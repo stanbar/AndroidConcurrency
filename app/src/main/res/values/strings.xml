@@ -4,4 +4,5 @@
     <string name="title_activity_contact_provider_demo">ContactProviderDemoActivity</string>
     <string name="title_activity_download">DownloadActivity</string>
     <string name="title_activity_contact_provider_async">ContactProviderAsyncActivity</string>
+    <string name="started_service">Started Service</string>
 </resources>

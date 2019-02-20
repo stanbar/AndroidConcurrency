@@ -36,7 +36,7 @@ class DeferredDownloadService : IntentService("DeferredDownloadService") {
         sendNotification(pendingIntent)
     }
 
-    fun sendNotification(intent: PendingIntent) {
+    private fun sendNotification(intent: PendingIntent) {
         val notification = NotificationCompat.Builder(this, "Default")
                 .setContentTitle("ImageDownloadComplete")
                 .setContentText(cacheDir.absolutePath.toString())
@@ -57,7 +57,7 @@ class DeferredDownloadService : IntentService("DeferredDownloadService") {
     }
 
 
-    fun saveImageIntoFile(src: String) {
+    private fun saveImageIntoFile(src: String) {
         var input: InputStream? = null
         var out: FileOutputStream? = null
         try {

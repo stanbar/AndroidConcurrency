@@ -3,13 +3,13 @@ package com.stasbar.concurrency
 import android.app.Service
 import android.content.Intent
 import android.graphics.Bitmap
-import android.os.*
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
+import android.os.*
 import java.io.IOException
+import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
-import android.graphics.drawable.Drawable
-import java.io.InputStream
 
 
 /**
@@ -32,7 +32,7 @@ class DownloadService : Service() {
          * Start up the thread running the service, which we create separate thread since,
          * Service by default run in main Thread
          */
-        val handlerThread : HandlerThread = HandlerThread("DownloadService")
+        val handlerThread = HandlerThread("DownloadService")
         handlerThread.start()
         /**
          * Get the Thread-Specific Storage Looper from this Service HandlerThread
@@ -85,33 +85,33 @@ class DownloadService : Service() {
             DRAWABLE -> msg.obj = loadDrawableFromURL(url)
         }
 
-        val messenger = intent.extras.get(MESSENGER_KEY) as Messenger
+        val messenger = intent.extras?.get(MESSENGER_KEY) as Messenger
         messenger.send(msg)
     }
 
 
-    fun loadBitmapFromURL(src: String): Bitmap? {
-        try {
+    private fun loadBitmapFromURL(src: String): Bitmap? {
+        return try {
             val url = URL(src)
             val connection = url.openConnection() as HttpURLConnection
             connection.doInput = true
             connection.connect()
             val input = connection.inputStream
             val myBitmap = BitmapFactory.decodeStream(input)
-            return myBitmap
+            myBitmap
         } catch (e: IOException) {
             // Log exception
-            return null
+            null
         }
     }
 
-    fun loadDrawableFromURL(url: String): Drawable? {
-        try {
+    private fun loadDrawableFromURL(url: String): Drawable? {
+        return try {
             val `is` = URL(url).content as InputStream
             val d = Drawable.createFromStream(`is`,url)
-            return d
+            d
         } catch (e: Exception) {
-            return null
+            null
         }
 
     }

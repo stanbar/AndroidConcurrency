@@ -8,7 +8,7 @@ import java.lang.ref.SoftReference
  * Created by stasbar on 27.07.2017
  */
 class SimpleCache {
-    val mCache: HashMap<String, SoftReference<Square>> = HashMap()
+    private val mCache: HashMap<String, SoftReference<Square>> = HashMap()
     fun put(key: String, value: Square) {
         synchronized(mCache) {
             mCache.put(key, SoftReference(value))
@@ -36,7 +36,7 @@ class SimpleCache {
 
     fun read(key: String): Int {
         synchronized(mCache) {
-            var value: Square?
+            val value: Square?
             val reference = mCache[key]
 
             if (reference != null)

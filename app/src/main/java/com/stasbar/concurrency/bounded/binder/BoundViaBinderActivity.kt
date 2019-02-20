@@ -16,7 +16,7 @@ class BoundViaBinderActivity : AppCompatActivity() {
     var mService: KeyGenerator? = null
     var mBound: Boolean = false
 
-    val connection: ServiceConnection = object : ServiceConnection {
+    private val connection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, iService: IBinder?) {
             mService = KeyGenerator.Stub.asInterface(iService)
             mBound = true
@@ -27,14 +27,12 @@ class BoundViaBinderActivity : AppCompatActivity() {
             mBound = false
         }
     }
-    val callback = object : KeyGeneratorCallback.Stub() {
-
+    private val callback = object : KeyGeneratorCallback.Stub() {
         override fun sendKey(key: String?) {
             runOnUiThread {
                 buttonGenerateUUID.text = key
             }
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

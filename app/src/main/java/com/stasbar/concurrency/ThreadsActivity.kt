@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_threads.*
 
 class ThreadsActivity : AppCompatActivity() {
 
-    lateinit var backgroundHandler: Handler
+    private lateinit var backgroundHandler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

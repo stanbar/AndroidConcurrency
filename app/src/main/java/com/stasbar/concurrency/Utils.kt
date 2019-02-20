@@ -6,21 +6,16 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.core.util.TimeUtils
 import androidx.fragment.app.FragmentActivity
+import kotlin.system.measureTimeMillis
 
 /**
  * Created by stasbar on 09.07.2017
  */
 object Utils {
-    fun measureTime(body: () -> Unit): Long {
-        val start = System.currentTimeMillis()
-        body()
-        val end = System.currentTimeMillis()
-        return end - start
-    }
 
     @SuppressLint("RestrictedApi")
     fun measureTimeAndPrint(tag: String, body: () -> Unit) {
-        val time = measureTime(body)
+        val time = measureTimeMillis { body() }
         val stringBuilder = StringBuilder()
         TimeUtils.formatDuration(time, stringBuilder)
 
@@ -31,9 +26,11 @@ object Utils {
     fun hideKeyboard(activity: FragmentActivity) {
         if (activity.currentFocus != null && activity.currentFocus.windowToken != null) {
             val inputMethodManager = activity.getSystemService(
-                    Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                Activity.INPUT_METHOD_SERVICE
+            ) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                    activity.currentFocus.windowToken, 0)
+                activity.currentFocus.windowToken, 0
+            )
         }
     }
 }

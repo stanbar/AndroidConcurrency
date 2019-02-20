@@ -54,8 +54,8 @@ class DownloadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_download)
         fabClean.setOnClickListener { imageView.setImageDrawable(null) }
-        downloadViaBroadcast.setOnClickListener { initiateDownloadViaBroadcast(); Utils.hideKeyboard(this)  }
-        downloadDeferred.setOnClickListener { initiateDeferredDownloadActivity(); Utils.hideKeyboard(this)  }
+        downloadViaBroadcast.setOnClickListener { initiateDownloadViaBroadcast(); Utils.hideKeyboard(this) }
+        downloadDeferred.setOnClickListener { initiateDeferredDownloadActivity(); Utils.hideKeyboard(this) }
 
         downloadViaStartedService.setOnClickListener {
             val downloadImageType = getDownloadImageType(radioGroupImageType.checkedRadioButtonId)
@@ -75,13 +75,12 @@ class DownloadActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    fun getDownloadImageType(buttonId: Int): String {
-        when (buttonId) {
-            R.id.radioButtonBitmap -> return DownloadService.BITMAP
-            R.id.radioButtonDrawable -> return DownloadService.DRAWABLE
-            else -> throw IllegalStateException()
-        }
+    private fun getDownloadImageType(buttonId: Int) = when (buttonId) {
+        R.id.radioButtonBitmap -> DownloadService.BITMAP
+        R.id.radioButtonDrawable -> DownloadService.DRAWABLE
+        else -> throw IllegalStateException()
     }
+
 
     private fun downloadStartedService(format: String) {
         start = System.currentTimeMillis()
