@@ -10,7 +10,8 @@ data class PoWParams(val searchRange: LongRange, val data: String, val difficult
 
 class PoWAlreadyFoundException : Exception()
 
-class ProofOfWorkAsyncTask(val onPowFound: (MiningResult) -> Unit) : AsyncTask<PoWParams, Long, MiningResult>() {
+class ProofOfWorkAsyncTask(val name: String, val onPowFound: (MiningResult) -> Unit) :
+    AsyncTask<PoWParams, Long, MiningResult>() {
 
     override fun doInBackground(vararg params: PoWParams): MiningResult {
         val (searchRange, block, difficulty) = params[0]
@@ -35,11 +36,11 @@ class ProofOfWorkAsyncTask(val onPowFound: (MiningResult) -> Unit) : AsyncTask<P
         }
 
         return if (finalHash != null) {
-            Log.d("ProofOfWorkAsyncTask", "Found PoW: $finalHash in ${measureFormat.format(Date(time))}")
+            Log.d("PoWAsyncTask$name", "Found PoW: $finalHash in ${measureFormat.format(Date(time))}")
             MiningResult.Success(finalHash!!, time)
         } else {
             Log.d(
-                "ProofOfWorkAsyncTask",
+                "PoWAsyncTask$name",
                 "Didn't found PoW: $finalHash in $searchRange in time ${measureFormat.format(Date(time))}"
             )
             MiningResult.Failure
@@ -51,5 +52,10 @@ class ProofOfWorkAsyncTask(val onPowFound: (MiningResult) -> Unit) : AsyncTask<P
     override fun onPostExecute(result: MiningResult) {
         super.onPostExecute(result)
         onPowFound(result)
+    }
+
+    override fun onCancelled() {
+        super.onCancelled()
+        Log.d("PoWAsyncTask$name", " Cancelled !")
     }
 }

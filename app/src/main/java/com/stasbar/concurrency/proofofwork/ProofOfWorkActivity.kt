@@ -29,7 +29,7 @@ class ProofOfWorkActivity : AppCompatActivity() {
             val difficulty = etDifficulty.text.toString().toInt()
             val workersSize = 10
             asyncTasks = List(workersSize) {
-                ProofOfWorkAsyncTask { results ->
+                ProofOfWorkAsyncTask(it.toString()) { results ->
                     showResults(results)
                     asyncTasks.forEach { it.cancel(true) }
                 }
