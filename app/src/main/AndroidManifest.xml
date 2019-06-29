@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".threadsocket.LocalSocketActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -125,7 +124,19 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.ListActivity" />
-        </activity>
+        </activity> <!-- Multiprocessing -->
+        <activity
+            android:name=".multiprocess.ProcessGlobalActivity"
+            android:process=".global" />
+        <activity
+            android:name=".multiprocess.ProcessTwoActivity"
+            android:process=":processtwo" />
+        <activity android:name=".multiprocess.ProcessOneActivity" />
+
+        <activity
+            android:name=".proofofwork.ProofOfWorkActivity"
+            android:label="@string/title_activity_proof_of_work"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

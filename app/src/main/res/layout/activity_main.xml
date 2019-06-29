@@ -169,6 +169,47 @@
             android:layout_margin="8dp"
             android:text="LocalSocketActivity" />
 
+        <!-- Multiprocessing -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Multi-process"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/buttonMainProcess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Main Process" />
+
+            <!--ContentProviderAsync -->
+            <Button
+                android:id="@+id/buttonSecondProcess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Second Process" />
+        </LinearLayout>
+
+
+        <!-- ProofOfWork -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Proof-of-Work"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+        <Button
+            android:id="@+id/buttonProofOfWork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="ProofOfWork Activity" />
 
     </LinearLayout>
 </ScrollView>
