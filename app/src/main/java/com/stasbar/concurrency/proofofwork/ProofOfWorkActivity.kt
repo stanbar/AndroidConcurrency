@@ -27,11 +27,11 @@ class ProofOfWorkActivity : AppCompatActivity() {
 
         btnStartAsync.setOnClickListener {
             val difficulty = etDifficulty.text.toString().toInt()
-            val workersSize = 10
+            val workersSize = etWorkers.text.toString().toInt()
             asyncTasks = List(workersSize) {
                 ProofOfWorkAsyncTask(it.toString()) { results ->
                     showResults(results)
-                    asyncTasks.forEach { it.cancel(true) }
+                    asyncTasks.forEach { task -> task.cancel(true) }
                 }
             }
 
@@ -46,17 +46,19 @@ class ProofOfWorkActivity : AppCompatActivity() {
         }
     }
 
+    var testCounter = 0
     private fun showResults(result: MiningResult) {
         if (result is MiningResult.Success) {
             val formatedTime = measureFormat.format(Date(result.time))
             println("Block Mined!!! : ${result.hash} in $formatedTime")
-            tvHash.text = result.hash
-            tvTime.text = formatedTime
+            tvHash.text = "[$testCounter] ${result.hash}"
+            tvTime.text = "[$testCounter] ${formatedTime}"
         } else {
             println("Didn't find pow")
-            tvHash.text = "Didn't find PoW"
-            tvTime.text = "Never"
+            tvHash.text = "[$testCounter] Didn't find PoW"
+            tvTime.text = "[$testCounter] Never"
         }
+        testCounter++
     }
 
     companion object {

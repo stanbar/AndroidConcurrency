@@ -31,14 +31,14 @@
 
     <EditText
         android:id="@+id/etDifficulty"
-        android:layout_width="0dp"
+        android:layout_width="193dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="128dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:hint="Difficulty"
         android:text="5"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/etWorkers"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,4 +76,20 @@
         android:text="Start Async"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etDifficulty" />
+
+    <EditText
+        android:id="@+id/etWorkers"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="Workers"
+        android:inputType="number"
+        android:text="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/etDifficulty"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
