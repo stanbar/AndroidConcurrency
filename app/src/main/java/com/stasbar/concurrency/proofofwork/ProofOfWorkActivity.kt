@@ -1,5 +1,6 @@
 package com.stasbar.concurrency.proofofwork
 
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
 import com.stasbar.concurrency.R
@@ -11,14 +12,13 @@ import java.util.*
 
 class ProofOfWorkActivity : AppCompatActivity() {
 
-
-    var asyncTasks: List<ProofOfWorkAsyncTask> = listOf()
+    private var asyncTasks: List<ProofOfWorkAsyncTask> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_proof_of_work)
         setSupportActionBar(toolbar)
-
+        tvCpuSize.text = "Available CPUs: ${Runtime.getRuntime().availableProcessors()}"
         btnMineSync.setOnClickListener {
             val difficulty = etDifficulty.text.toString().toInt()
             val result = mine("Hello", difficulty)
@@ -35,10 +35,14 @@ class ProofOfWorkActivity : AppCompatActivity() {
                 }
             }
 
-            val from = Long.MIN_VALUE
+            var from = Long.MIN_VALUE
             val perWorker = (Long.MAX_VALUE / workersSize) * 2
             asyncTasks.forEach {
-                it.execute(PoWParams(LongRange(from, from + perWorker), "Hello", difficulty))
+                it.executeOnExecutor(
+                    AsyncTask.THREAD_POOL_EXECUTOR,
+                    PoWParams(LongRange(from, from + perWorker), "Hello", difficulty)
+                )
+                from += perWorker
             }
         }
         btnStop.setOnClickListener {

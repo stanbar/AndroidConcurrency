@@ -14,8 +14,8 @@ class ProofOfWorkAsyncTask(val name: String, val onPowFound: (MiningResult) -> U
     AsyncTask<PoWParams, Long, MiningResult>() {
 
     override fun doInBackground(vararg params: PoWParams): MiningResult {
-        val (searchRange, block, difficulty) = params[0]
-
+        val (searchRange, data, difficulty) = params[0]
+        Log.d("ProofOfWorkAsyncTask", "Thread name: ${Thread.currentThread().name} searchRange: $searchRange")
         var finalHash: String? = null
         val time = try {
             measureTimeMillis {
@@ -24,7 +24,7 @@ class ProofOfWorkAsyncTask(val name: String, val onPowFound: (MiningResult) -> U
                     // Stop searching if pow is already found
                     if (isCancelled) throw PoWAlreadyFoundException()
 
-                    val hash = calculateHashOf(block, testNonce)
+                    val hash = calculateHashOf(data, testNonce)
                     if (hash.substring(0, difficulty) == target) {
                         finalHash = hash
                         break
