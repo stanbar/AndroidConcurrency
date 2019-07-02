@@ -134,7 +134,7 @@
             android:process=":processtwo" />
         <activity android:name=".multiprocess.ProcessOneActivity" />
         <activity
-            android:name=".proofofwork.ProofOfWorkActivity"
+            android:name=".masterthesis.ProofOfWorkActivity"
             android:label="@string/title_activity_proof_of_work"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

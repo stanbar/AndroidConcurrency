@@ -12,9 +12,9 @@ import com.stasbar.concurrency.contentResolver.ContentResolverActivity
 import com.stasbar.concurrency.database.DBActivity
 import com.stasbar.concurrency.java_concurrency.JavaConcurencyActivity
 import com.stasbar.concurrency.java_concurrency.ProducerConsumerActivity
+import com.stasbar.concurrency.masterthesis.ProofOfWorkActivity
 import com.stasbar.concurrency.multiprocess.ProcessOneActivity
 import com.stasbar.concurrency.multiprocess.ProcessTwoActivity
-import com.stasbar.concurrency.proofofwork.ProofOfWorkActivity
 import com.stasbar.concurrency.started.StartedServicesActivity
 import com.stasbar.concurrency.threadsocket.LocalSocketActivity
 import kotlinx.android.synthetic.main.activity_main.*

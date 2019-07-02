@@ -1,4 +1,4 @@
-package com.stasbar.concurrency.proofofwork
+package com.stasbar.concurrency.masterthesis
 
 import java.security.MessageDigest
 import java.util.*

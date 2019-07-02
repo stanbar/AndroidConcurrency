@@ -5,43 +5,213 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".proofofwork.ProofOfWorkActivity"
+    tools:context=".masterthesis.ProofOfWorkActivity"
     tools:showIn="@layout/activity_proof_of_work">
 
-    <Button
-        android:id="@+id/btnMineSync"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tvAlgorithmTitle"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Start Sync"
-        app:layout_constraintEnd_toStartOf="@+id/btnStartAsync"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDifficulty" />
-
-    <Button
-        android:id="@+id/btnStop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Stop Async Mining"
-        app:layout_constraintEnd_toEndOf="@+id/btnStartAsync"
-        app:layout_constraintStart_toStartOf="@+id/btnStartAsync"
-        app:layout_constraintTop_toBottomOf="@+id/btnStartAsync" />
-
-    <EditText
-        android:id="@+id/etDifficulty"
-        android:layout_width="193dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:hint="Difficulty"
-        android:text="5"
-        app:layout_constraintEnd_toStartOf="@+id/etWorkers"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:text="Algorithm"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <RadioGroup
+        android:id="@+id/radioGroupAlgorithm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/rbProofOfWork"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAlgorithmTitle">
+
+        <RadioButton
+            android:id="@+id/rbProofOfWork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Proof Of Work" />
+
+        <RadioButton
+            android:id="@+id/rbSuperPi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Super PI" />
+
+        <RadioButton
+            android:id="@+id/rbSorting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorting" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvMethodTitle"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Concurrency Method"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupAlgorithm" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/rbSynchronized"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMethodTitle">
+
+        <RadioButton
+            android:id="@+id/rbSynchronized"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Synchronized" />
+
+        <RadioButton
+            android:id="@+id/rbThreads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Threads" />
+
+        <RadioButton
+            android:id="@+id/rbAsyncTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AsyncTasks" />
+
+        <RadioButton
+            android:id="@+id/rbCoroutines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coroutines" />
+    </RadioGroup>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="tvMethodTitle,radioGroupMethod" />
+
+    <TextView
+        android:id="@+id/tvDifficult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/etDifficulty"
+        android:text="Difficult:"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/etDifficulty"
+        app:layout_constraintStart_toEndOf="@id/radioGroupAlgorithm"
+        app:layout_constraintTop_toTopOf="@+id/etDifficulty" />
+
+
+    <TextView
+        android:id="@+id/tvJobsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/etJobSize"
+        android:text="Jobs:"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/etJobSize"
+        app:layout_constraintStart_toEndOf="@id/barrierMethod"
+        app:layout_constraintTop_toTopOf="@+id/etJobSize" />
+
+    <TextView
+        android:id="@+id/tvPoolSizeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/etPoolSize"
+        android:text="PoolSize:"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/etPoolSize"
+        app:layout_constraintStart_toEndOf="@id/barrierMethod"
+        app:layout_constraintTop_toTopOf="@+id/etPoolSize" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="tvPoolSizeTitle,tvJobsTitle" />
+
+
+    <EditText
+        android:id="@+id/etDifficulty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:ems="4"
+        android:hint="Difficulty"
+        android:text="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvDifficult"
+        app:layout_constraintTop_toBottomOf="@+id/tvAlgorithmTitle" />
+
+
+    <EditText
+        android:id="@+id/etJobSize"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:ems="4"
+        android:hint="Jobs"
+        android:inputType="number"
+        android:text="8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toTopOf="@+id/radioGroupMethod" />
+
+    <EditText
+        android:id="@+id/etPoolSize"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:ems="10"
+        android:hint="Pool Size"
+        android:inputType="number"
+        android:text="8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toBottomOf="@+id/etJobSize" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierBottomMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="etPoolSize,radioGroupMethod" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Stop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnStart"
+        app:layout_constraintTop_toTopOf="@id/barrierBottomMethod" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Start"
+        app:layout_constraintEnd_toStartOf="@+id/btnStop"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/barrierBottomMethod" />
     <TextView
         android:id="@+id/tvHash"
         android:layout_width="0dp"
@@ -68,31 +238,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHash" />
 
-    <Button
-        android:id="@+id/btnStartAsync"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="55dp"
-        android:text="Start Async"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDifficulty" />
 
-    <EditText
-        android:id="@+id/etWorkers"
-        android:layout_width="194dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="Workers"
-        android:inputType="number"
-        android:text="4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/etDifficulty"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/tvCpuSize"
@@ -115,4 +262,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCpuSize"></LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
