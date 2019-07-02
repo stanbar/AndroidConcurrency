@@ -1,34 +1,72 @@
 package com.stasbar.concurrency.proofofwork
 
+import android.annotation.SuppressLint
 import android.os.AsyncTask
 import android.util.Log
+import android.widget.ProgressBar
+import android.widget.TextView
 import com.stasbar.concurrency.proofofwork.ProofOfWorkActivity.Companion.measureFormat
-import java.util.*
 import kotlin.system.measureTimeMillis
 
-data class PoWParams(val searchRange: LongRange, val data: String, val difficulty: Int)
+data class PoWParams @ExperimentalUnsignedTypes constructor(
+    val searchRange: ULongRange,
+    val data: String,
+    val difficulty: UInt
+)
 
 class PoWAlreadyFoundException : Exception()
 
-class ProofOfWorkAsyncTask(val name: String, val onPowFound: (MiningResult) -> Unit) :
-    AsyncTask<PoWParams, Long, MiningResult>() {
+@ExperimentalUnsignedTypes
+@SuppressLint("StaticFieldLeak")
+class ProofOfWorkAsyncTask(
+    val name: String,
+    private val progressBar: ProgressBar,
+    private val textView: TextView,
+    val onPowFound: (MiningResult) -> Unit
+) :
+    AsyncTask<PoWParams, ULong, MiningResult>() {
+
+    private var currentNonce: ULong = 0u
+    private var searchLength: ULong = 0u
+
+    lateinit var updater: Thread
+    @SuppressLint("SetTextI18n")
+    override fun onPreExecute() {
+        super.onPreExecute()
+        updater = Thread {
+            while (!isCancelled) {
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    Log.d("Updater", "InterruptedException")
+                }
+                val progress = (currentNonce.toDouble() / searchLength.toDouble() * 100).toInt()
+                progressBar.post { progressBar.progress = progress }
+                textView.post { textView.text = "$currentNonce/$searchLength[$progress]" }
+            }
+        }.apply { start() }
+    }
 
     override fun doInBackground(vararg params: PoWParams): MiningResult {
         val (searchRange, data, difficulty) = params[0]
+        searchLength = searchRange.last - searchRange.first
         Log.d("ProofOfWorkAsyncTask", "Thread name: ${Thread.currentThread().name} searchRange: $searchRange")
         var finalHash: String? = null
         val time = try {
             measureTimeMillis {
-                val target = String(CharArray(difficulty)).replace('\u0000', '0')
+                val target = String(CharArray(difficulty.toInt())).replace('\u0000', '0')
+                currentNonce = 0u
                 for (testNonce in searchRange) {
                     // Stop searching if pow is already found
                     if (isCancelled) throw PoWAlreadyFoundException()
 
                     val hash = calculateHashOf(data, testNonce)
-                    if (hash.substring(0, difficulty) == target) {
+                    if (hash.substring(0, difficulty.toInt()) == target) {
                         finalHash = hash
                         break
                     }
+
+                    currentNonce++
                 }
             }
         } catch (e: PoWAlreadyFoundException) {
@@ -36,12 +74,12 @@ class ProofOfWorkAsyncTask(val name: String, val onPowFound: (MiningResult) -> U
         }
 
         return if (finalHash != null) {
-            Log.d("PoWAsyncTask$name", "Found PoW: $finalHash in ${measureFormat.format(Date(time))}")
+            Log.d("PoWAsyncTask$name", "Found PoW: $finalHash in ${measureFormat.format(time)}")
             MiningResult.Success(finalHash!!, time)
         } else {
             Log.d(
                 "PoWAsyncTask$name",
-                "Didn't found PoW: $finalHash in $searchRange in time ${measureFormat.format(Date(time))}"
+                "Didn't found PoW: $finalHash in $searchRange in time ${measureFormat.format(time)}"
             )
             MiningResult.Failure
         }
@@ -52,6 +90,7 @@ class ProofOfWorkAsyncTask(val name: String, val onPowFound: (MiningResult) -> U
     override fun onPostExecute(result: MiningResult) {
         super.onPostExecute(result)
         onPowFound(result)
+        updater.interrupt()
     }
 
     override fun onCancelled() {

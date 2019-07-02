@@ -7,10 +7,11 @@ sealed class MiningResult {
     object Failure : MiningResult()
 }
 
+@ExperimentalUnsignedTypes
 fun mine(
     data: String,
     difficulty: Int,
-    searchNonce: LongRange = LongRange(Long.MIN_VALUE, Long.MAX_VALUE)
+    searchNonce: ULongRange = ULongRange(ULong.MIN_VALUE, ULong.MAX_VALUE)
 ): MiningResult {
     val target = String(CharArray(difficulty)).replace('\u0000', '0')
     val startTime = System.currentTimeMillis()
@@ -22,7 +23,8 @@ fun mine(
     return MiningResult.Failure
 }
 
-fun calculateHashOf(data: String, nonce: Long): String {
+@ExperimentalUnsignedTypes
+fun calculateHashOf(data: String, nonce: ULong): String {
     val input = data + nonce
     try {
         val digest = MessageDigest.getInstance("SHA-256")
