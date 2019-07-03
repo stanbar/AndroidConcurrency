@@ -19,7 +19,7 @@ class ProgressView : LinearLayout {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         orientation = HORIZONTAL
 
-        LayoutInflater.from(context).inflate(R.layout.progress_bar, this, true)
+        LayoutInflater.from(context).inflate(R.layout.progress_view, this, true)
 
         tvCounter = findViewById(R.id.tvCounter)
         progressBar = findViewById(R.id.progressBar)

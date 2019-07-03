@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit
 @ExperimentalUnsignedTypes
 abstract class PoWExecutor(
     val difficulty: UInt,
-    poolSize: Int,
-    val jobSize: Int
+    poolSize: UInt,
+    val jobSize: UInt
 ) {
     protected val threadFactory = ThreadFactory {
         Thread().apply {
@@ -17,7 +17,14 @@ abstract class PoWExecutor(
         }
     }
     protected val threadPool =
-        ThreadPoolExecutor(poolSize, poolSize, 0, TimeUnit.MILLISECONDS, LinkedBlockingQueue(), threadFactory)
+        ThreadPoolExecutor(
+            poolSize.toInt(),
+            poolSize.toInt(),
+            0,
+            TimeUnit.MILLISECONDS,
+            LinkedBlockingQueue(),
+            threadFactory
+        )
 
     protected val calculationsPerWorker = (ULong.MAX_VALUE / 1_000_000_000_000u / jobSize.toUInt())
 

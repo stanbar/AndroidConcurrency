@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 class ProcessingAsyncTask(
     val algorithm: Algorithm,
     difficulty: UInt,
-    poolSize: Int,
+    poolSize: UInt,
     jobs: Int,
     onUpdate: (JobUpdate) -> Unit,
     onComplete: (MiningResult) -> Unit

@@ -7,20 +7,19 @@ import kotlin.system.measureTimeMillis
 @ExperimentalUnsignedTypes
 class PoWThreadExecutor(
     difficulty: UInt,
-    poolSize: Int,
-    jobSize: Int,
+    poolSize: UInt,
+    jobSize: UInt,
     val onUpdate: (JobUpdate) -> Unit,
     val onComplete: (MiningResult) -> Unit
 ) : PoWExecutor(difficulty, poolSize, jobSize) {
-
 
     private val tasks = mutableListOf<Runnable>()
 
     init {
         var from = ULong.MIN_VALUE
-        repeat(jobSize) {
+        repeat(jobSize.toInt()) {
             val task = PoWThread(
-                it.toString(),
+                it,
                 PoWParams(ULongRange(from, from + calculationsPerWorker), "stasbar", difficulty),
                 onUpdate,
                 { result ->
@@ -43,7 +42,7 @@ class PoWThreadExecutor(
 
 @ExperimentalUnsignedTypes
 private class PoWThread(
-    val id: String,
+    val id: Int,
     val arguments: PoWParams,
     val onUpdate: (JobUpdate) -> Unit,
     val onComplete: (MiningResult) -> Unit
@@ -76,7 +75,7 @@ private class PoWThread(
                 }
             }
         } catch (e: PoWAlreadyFoundException) {
-            onComplete(MiningResult.Failure)
+            onComplete(MiningResult.NotFound(id))
             Log.e(Thread.currentThread().name, "cancelled asyck task", e)
             return
         }
@@ -86,7 +85,7 @@ private class PoWThread(
                 Thread.currentThread().name,
                 "Found PoW: $finalHash in ${ProofOfWorkActivity.measureFormat.format(time)}"
             )
-            MiningResult.Success(finalHash!!, time)
+            MiningResult.Success(id, finalHash!!, time)
         } else {
             Log.d(
                 Thread.currentThread().name,
@@ -94,7 +93,7 @@ private class PoWThread(
                     time
                 )}"
             )
-            MiningResult.Failure
+            MiningResult.NotFound(id)
         }
 
         onComplete(result)

@@ -4,7 +4,7 @@ import android.util.Log
 
 @ExperimentalUnsignedTypes
 class Updater(
-    val id: String,
+    val id: Int,
     var searchLength: ULong = 0u,
     val onUpdate: (JobUpdate) -> Unit
 ) : Thread() {

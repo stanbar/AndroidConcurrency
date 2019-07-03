@@ -2,10 +2,7 @@ package com.stasbar.concurrency.masterthesis
 
 import java.security.MessageDigest
 
-sealed class MiningResult {
-    class Success(val hash: String, val time: Long) : MiningResult()
-    object Failure : MiningResult()
-}
+
 
 @ExperimentalUnsignedTypes
 fun mine(
@@ -20,7 +17,7 @@ fun mine(
         if (hash.substring(0, difficulty) == target)
             return MiningResult.Success(hash, System.currentTimeMillis() - startTime)
     }
-    return MiningResult.Failure
+    return MiningResult.NotFound
 }
 
 @ExperimentalUnsignedTypes

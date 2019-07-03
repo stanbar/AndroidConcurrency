@@ -9,8 +9,8 @@ import kotlin.system.measureTimeMillis
 @ExperimentalUnsignedTypes
 class PoWAsyncTaskExecutor(
     difficulty: UInt,
-    poolSize: Int,
-    jobSize: Int,
+    poolSize: UInt,
+    jobSize: UInt,
     val onUpdate: (JobUpdate) -> Unit,
     val onComplete: (MiningResult) -> Unit
 ) : PoWExecutor(difficulty, poolSize, jobSize) {
@@ -21,7 +21,7 @@ class PoWAsyncTaskExecutor(
         var from = ULong.MIN_VALUE
         repeat(jobSize) {
             val task = ProofOfWorkAsyncTask(
-                it.toString(),
+                it,
                 PoWParams(ULongRange(from, from + calculationsPerWorker), "stasbar", difficulty),
                 onUpdate,
                 { result ->
@@ -47,7 +47,7 @@ class PoWAlreadyFoundException : Exception()
 @ExperimentalUnsignedTypes
 @SuppressLint("StaticFieldLeak")
 private class ProofOfWorkAsyncTask(
-    val id: String,
+    val id: Int,
     val arguments: PoWParams,
     val onUpdate: (JobUpdate) -> Unit,
     val onComplete: (MiningResult) -> Unit
@@ -80,7 +80,7 @@ private class ProofOfWorkAsyncTask(
                 }
             }
         } catch (e: PoWAlreadyFoundException) {
-            return MiningResult.Failure
+            return MiningResult.NotFound
         }
 
         return if (finalHash != null) {
@@ -93,7 +93,7 @@ private class ProofOfWorkAsyncTask(
                     time
                 )}"
             )
-            MiningResult.Failure
+            MiningResult.NotFound
         }
 
 

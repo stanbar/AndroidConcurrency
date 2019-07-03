@@ -1,101 +1,52 @@
 package com.stasbar.concurrency.masterthesis
 
-import android.os.AsyncTask
 import androidx.annotation.IdRes
 import com.stasbar.concurrency.R
-import com.stasbar.concurrency.masterthesis.proofofwork.PoWParams
-import com.stasbar.concurrency.masterthesis.proofofwork.PoWThread
-import com.stasbar.concurrency.masterthesis.proofofwork.ProofOfWorkAsyncTask
-import kotlinx.coroutines.Job
+import com.stasbar.concurrency.masterthesis.proofofwork.PoWAsyncTaskExecutor
+import com.stasbar.concurrency.masterthesis.proofofwork.PoWCoroutineExecutor
+import com.stasbar.concurrency.masterthesis.proofofwork.PoWSynchronized
+import com.stasbar.concurrency.masterthesis.proofofwork.PoWThreadExecutor
 
 enum class Algorithm(val radioButtonId: Int) {
     ProofOfWork(R.id.rbProofOfWork) {
+        @ExperimentalUnsignedTypes
         override fun processOn(
-            processingMethod: ProcessingMethod,
-            params: AsyncParams,
+            method: ProcessingMethod,
+            difficulty: UInt,
+            poolSize: UInt,
+            jobSize: UInt,
             onUpdate: (JobUpdate) -> Unit,
             onComplete: (MiningResult) -> Unit
-        ) {
-            val (searchRange, data, difficulty) = params as PoWParams
+        ) = when (method) {
+            ProcessingMethod.SYNCHRONIZED ->
+                PoWSynchronized(difficulty, onComplete).execute()
 
-            when (processingMethod) {
-                ProcessingMethod.SYNCHRONIZED -> {
-                }
-                ProcessingMethod.THREADS -> {
-                }
-                ProcessingMethod.ASYNCTASKS -> {
-                }
-            }
+            ProcessingMethod.THREADS ->
+                PoWThreadExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
 
+            ProcessingMethod.ASYNCTASKS ->
+                PoWAsyncTaskExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
 
+            ProcessingMethod.COROUTINES ->
+                PoWCoroutineExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
         }
+    }
+//    ,
+//    SuperPi(R.id.rbSuperPi) {
+//    },
+//    Sorting(R.id.rbSorting) {
+//    }
+    ;
 
-        @ExperimentalUnsignedTypes
-        override fun createAsyncTask(
-            id: String,
-            params: AsyncParams,
-            onUpdate: (JobUpdate) -> Unit,
-            onComplete: (MiningResult) -> Unit
-        ) = ProofOfWorkAsyncTask(
-            id,
-            params as PoWParams,
-            onUpdate,
-            onComplete
-        )
-
-        @ExperimentalUnsignedTypes
-        override fun createThread(
-            id: String,
-            params: AsyncParams,
-            onUpdate: (JobUpdate) -> Unit,
-            onComplete: (MiningResult) -> Unit
-        ): Thread {
-            return PoWThread(
-                id,
-                params as PoWParams,
-                onUpdate,
-                onComplete
-            )
-        }
-
-        override fun createCoroutine(): Job {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun start(difficulty: Long) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-    },
-    SuperPi(R.id.rbSuperPi) {
-        override fun start(difficulty: Long) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-    },
-    Sorting(R.id.rbSorting) {
-        override fun start(difficulty: Long) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-    };
-
+    @ExperimentalUnsignedTypes
     abstract fun processOn(
-        method: ProcessingMethod, params: AsyncParams, onUpdate: (JobUpdate) -> Unit,
+        method: ProcessingMethod,
+        difficulty: UInt,
+        poolSize: UInt,
+        jobSize: UInt,
+        onUpdate: (JobUpdate) -> Unit,
         onComplete: (MiningResult) -> Unit
     )
-
-    abstract fun start(difficulty: Long)
-
-    abstract fun createAsyncTask(
-        id: String, params: AsyncParams, onUpdate: (JobUpdate) -> Unit,
-        onComplete: (MiningResult) -> Unit
-    ): AsyncTask<*, *, *>
-
-    abstract fun createThread(
-        id: String, params: AsyncParams, onUpdate: (JobUpdate) -> Unit,
-        onComplete: (MiningResult) -> Unit
-    ): Thread
-
-    abstract fun createCoroutine(): Job
-
 
     companion object {
         fun forButtonId(@IdRes radioButtonId: Int) =
