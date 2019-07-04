@@ -1,4 +1,4 @@
-package com.stasbar.concurrency.masterthesis.widget
+package com.stasbar.concurrency.benchmarks.widget
 
 import android.content.Context
 import android.util.AttributeSet

@@ -1,40 +1,20 @@
-package com.stasbar.concurrency.masterthesis
+package com.stasbar.concurrency.benchmarks
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import com.stasbar.concurrency.R
-import com.stasbar.concurrency.masterthesis.widget.ProgressView
+import com.stasbar.concurrency.benchmarks.widget.ProgressView
 import kotlinx.android.synthetic.main.activity_proof_of_work.*
 import kotlinx.android.synthetic.main.content_proof_of_work.*
 import java.text.NumberFormat
 
 enum class ProcessingMethod(@IdRes val radioButtonId: Int) {
-    SYNCHRONIZED(R.id.rbSynchronized) {
-        override fun process(algorithm: Algorithm, difficulty: Int, poolSize: UInt, jobSize: Int): MiningResult {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-    },
-    THREADS(R.id.rbThreads) {
-        override fun process(difficulty: Int, poolSize: UInt, jobSize: Int): MiningResult {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-    },
-    ASYNCTASKS(R.id.rbAsyncTask) {
-        override fun process(algorithm: Algorithm, difficulty: Int, poolSize: UInt, jobSize: Int): MiningResult {
-
-        }
-    },
-    COROUTINES(R.id.rbCoroutines) {
-        override fun process(difficulty: Int, poolSize: UInt, jobSize: Int): MiningResult {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-    };
-
-    abstract fun process(algorithm: Algorithm, difficulty: Int, poolSize: UInt, jobSize: Int): MiningResult
+    SYNCHRONIZED(R.id.rbSynchronized),
+    THREADS(R.id.rbThreads),
+    ASYNCTASKS(R.id.rbAsyncTask),
+    COROUTINES(R.id.rbCoroutines);
 
     companion object {
         fun forButtonId(@IdRes radioButtonId: Int) =
@@ -54,7 +34,7 @@ class ProofOfWorkActivity : AppCompatActivity() {
 
         btnStart.setOnClickListener {
             val method = ProcessingMethod.forButtonId(radioGroupMethod.checkedRadioButtonId)
-            val algorithm = Algorithm.forButtonId(radioGroupMethod.checkedRadioButtonId)
+            val algorithm = Algorithm.forButtonId(radioGroupAlgorithm.checkedRadioButtonId)
 
             val difficulty = etDifficulty.text.toString().toUInt()
             val poolSize = etPoolSize.text.toString().toUInt()
@@ -62,7 +42,6 @@ class ProofOfWorkActivity : AppCompatActivity() {
 
             startProcessing(method, algorithm, difficulty, poolSize, jobSize)
         }
-
     }
 
     private fun startProcessing(
@@ -76,6 +55,9 @@ class ProofOfWorkActivity : AppCompatActivity() {
         val progressViews = List(jobSize.toInt()) {
             ProgressView(this)
         }
+        progressViews.forEach {
+            progressContainer.addView(it)
+        }
         algorithm.processOn(method, difficulty, poolSize, jobSize, { update ->
             val (id, currentNonce, searchLength) = update
 
@@ -83,29 +65,25 @@ class ProofOfWorkActivity : AppCompatActivity() {
             progressViews[id].progressBar.progress = progress
             progressViews[id].tvCounter.text = "$currentNonce/$searchLength[$progress]"
         }, { result ->
-
             showResults(result, progressViews[result.id])
-            // TODO cancel all other
         })
     }
 
 
-    private var testCounter = 0
     @SuppressLint("SetTextI18n")
     private fun showResults(result: MiningResult, progressView: ProgressView) {
         if (result is MiningResult.Success) {
             val formattedTime = measureFormat.format(result.time)
             println("Block Mined!!! : ${result.hash} in $formattedTime")
-            tvHash.text = "[$testCounter] ${result.hash}"
-            tvTime.text = "[$testCounter] $formattedTime"
+            tvHash.text = "${result.hash}"
+            tvTime.text = "$formattedTime"
 
         } else {
             println("Didn't find pow")
-            tvHash.text = "[$testCounter] Didn't find PoW"
-            tvTime.text = "[$testCounter] Never"
+            tvHash.text = "Didn't find PoW"
+            tvTime.text = "Never"
             progressView.alpha = 0.2f
         }
-        testCounter++
     }
 
     companion object {

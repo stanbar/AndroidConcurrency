@@ -3,6 +3,7 @@ package com.stasbar.concurrency
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.stasbar.concurrency.benchmarks.ProofOfWorkActivity
 import com.stasbar.concurrency.bounded.local.BoundLocalActivity
 import com.stasbar.concurrency.bounded.messenger.BoundViaMessengerActivity
 import com.stasbar.concurrency.caching.CacheActivity
@@ -12,7 +13,6 @@ import com.stasbar.concurrency.contentResolver.ContentResolverActivity
 import com.stasbar.concurrency.database.DBActivity
 import com.stasbar.concurrency.java_concurrency.JavaConcurencyActivity
 import com.stasbar.concurrency.java_concurrency.ProducerConsumerActivity
-import com.stasbar.concurrency.masterthesis.ProofOfWorkActivity
 import com.stasbar.concurrency.multiprocess.ProcessOneActivity
 import com.stasbar.concurrency.multiprocess.ProcessTwoActivity
 import com.stasbar.concurrency.started.StartedServicesActivity

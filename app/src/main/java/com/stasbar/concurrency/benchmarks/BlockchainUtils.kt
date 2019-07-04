@@ -1,24 +1,7 @@
-package com.stasbar.concurrency.masterthesis
+package com.stasbar.concurrency.benchmarks
 
 import java.security.MessageDigest
 
-
-
-@ExperimentalUnsignedTypes
-fun mine(
-    data: String,
-    difficulty: Int,
-    searchNonce: ULongRange = ULongRange(ULong.MIN_VALUE, ULong.MAX_VALUE)
-): MiningResult {
-    val target = String(CharArray(difficulty)).replace('\u0000', '0')
-    val startTime = System.currentTimeMillis()
-    for (testNonce in searchNonce) {
-        val hash = calculateHashOf(data, testNonce)
-        if (hash.substring(0, difficulty) == target)
-            return MiningResult.Success(hash, System.currentTimeMillis() - startTime)
-    }
-    return MiningResult.NotFound
-}
 
 @ExperimentalUnsignedTypes
 fun calculateHashOf(data: String, nonce: ULong): String {

@@ -1,11 +1,11 @@
-package com.stasbar.concurrency.masterthesis
+package com.stasbar.concurrency.benchmarks
 
 import androidx.annotation.IdRes
 import com.stasbar.concurrency.R
-import com.stasbar.concurrency.masterthesis.proofofwork.PoWAsyncTaskExecutor
-import com.stasbar.concurrency.masterthesis.proofofwork.PoWCoroutineExecutor
-import com.stasbar.concurrency.masterthesis.proofofwork.PoWSynchronized
-import com.stasbar.concurrency.masterthesis.proofofwork.PoWThreadExecutor
+import com.stasbar.concurrency.benchmarks.proofofwork.PoWAsyncTaskExecutor
+import com.stasbar.concurrency.benchmarks.proofofwork.PoWCoroutineExecutor
+import com.stasbar.concurrency.benchmarks.proofofwork.PoWSynchronized
+import com.stasbar.concurrency.benchmarks.proofofwork.PoWThreadExecutor
 
 enum class Algorithm(val radioButtonId: Int) {
     ProofOfWork(R.id.rbProofOfWork) {
@@ -17,18 +17,20 @@ enum class Algorithm(val radioButtonId: Int) {
             jobSize: UInt,
             onUpdate: (JobUpdate) -> Unit,
             onComplete: (MiningResult) -> Unit
-        ) = when (method) {
-            ProcessingMethod.SYNCHRONIZED ->
-                PoWSynchronized(difficulty, onComplete).execute()
+        ) {
+            when (method) {
+                ProcessingMethod.SYNCHRONIZED ->
+                    PoWSynchronized(difficulty, onComplete).execute()
 
-            ProcessingMethod.THREADS ->
-                PoWThreadExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
+                ProcessingMethod.THREADS -> {
+                    PoWThreadExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
+                }
+                ProcessingMethod.ASYNCTASKS ->
+                    PoWAsyncTaskExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
 
-            ProcessingMethod.ASYNCTASKS ->
-                PoWAsyncTaskExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
-
-            ProcessingMethod.COROUTINES ->
-                PoWCoroutineExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
+                ProcessingMethod.COROUTINES ->
+                    PoWCoroutineExecutor(difficulty, poolSize, jobSize, onUpdate, onComplete).execute()
+            }
         }
     }
 //    ,

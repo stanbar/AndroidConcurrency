@@ -1,13 +1,11 @@
-package com.stasbar.concurrency.masterthesis.proofofwork
+package com.stasbar.concurrency.benchmarks.proofofwork
 
-import android.annotation.SuppressLint
-import android.os.AsyncTask
-import android.util.Log
-import com.stasbar.concurrency.masterthesis.*
+import com.stasbar.concurrency.benchmarks.*
+import timber.log.Timber
 import kotlin.system.measureTimeMillis
 
 @ExperimentalUnsignedTypes
-class PoWAsyncTaskExecutor(
+class PoWThreadExecutor(
     difficulty: UInt,
     poolSize: UInt,
     jobSize: UInt,
@@ -15,61 +13,58 @@ class PoWAsyncTaskExecutor(
     val onComplete: (MiningResult) -> Unit
 ) : PoWExecutor(difficulty, poolSize, jobSize) {
 
-    private val asyncTasks = mutableListOf<ProofOfWorkAsyncTask>()
+    val tasks = mutableListOf<Runnable>()
 
     init {
         var from = ULong.MIN_VALUE
-        repeat(jobSize) {
-            val task = ProofOfWorkAsyncTask(
+        repeat(jobSize.toInt()) {
+            val task = PoWThread(
                 it,
                 PoWParams(ULongRange(from, from + calculationsPerWorker), "stasbar", difficulty),
                 onUpdate,
                 { result ->
                     onComplete(result)
-                    asyncTasks.forEach { asyncTask -> asyncTask.cancel(true) }
+                    if (result is MiningResult.Success) cancel()
                 })
-            asyncTasks.add(task)
+            tasks.add(task)
             from += calculationsPerWorker
         }
     }
 
     override fun execute() {
-        asyncTasks.forEach { it.executeOnExecutor(threadPool) }
+        tasks.forEach { threadPool.submit(it) }
     }
 
     override fun cancel() {
-        asyncTasks.forEach { it.cancel(true) }
+        threadPool.shutdownNow()
     }
 }
 
-class PoWAlreadyFoundException : Exception()
-
 @ExperimentalUnsignedTypes
-@SuppressLint("StaticFieldLeak")
-private class ProofOfWorkAsyncTask(
+class PoWThread(
     val id: Int,
     val arguments: PoWParams,
     val onUpdate: (JobUpdate) -> Unit,
     val onComplete: (MiningResult) -> Unit
-) :
-    AsyncTask<Any, ULong, MiningResult>() {
+) : Runnable {
 
-    lateinit var updater: Updater
+    //TODO include in analisis
+    private lateinit var updater: Updater
 
-    override fun doInBackground(vararg params: Any): MiningResult {
+    override fun run() {
         val (searchRange, data, difficulty) = arguments
         val searchLength = searchRange.last - searchRange.first
         updater = Updater(id, searchLength, onUpdate)
         updater.start()
 
-        Log.d("ProofOfWorkAsyncTask", "Thread name: ${Thread.currentThread().name} searchRange: $searchRange")
+        Timber.d("Thread name: ${Thread.currentThread().name} searchRange: $searchRange")
         var finalHash: String? = null
         val time = try {
             measureTimeMillis {
                 val target = String(CharArray(difficulty.toInt())).replace('\u0000', '0')
                 for (testNonce in searchRange) {
                     // Stop searching if pow is already found
-                    if (isCancelled) throw PoWAlreadyFoundException()
+                    if (Thread.currentThread().isInterrupted) throw PoWAlreadyFoundException()
 
                     val hash = calculateHashOf(data, testNonce)
                     if (hash.substring(0, difficulty.toInt()) == target) {
@@ -80,33 +75,28 @@ private class ProofOfWorkAsyncTask(
                 }
             }
         } catch (e: PoWAlreadyFoundException) {
-            return MiningResult.NotFound
+            onComplete(MiningResult.Cancelled(id))
+            Timber.e(e, "[${Thread.currentThread().name}] cancelled thread work")
+            return
         }
 
-        return if (finalHash != null) {
-            Log.d("PoWAsyncTask-$id", "Found PoW: $finalHash in ${ProofOfWorkActivity.measureFormat.format(time)}")
-            MiningResult.Success(finalHash!!, time)
-        } else {
-            Log.d(
-                "PoWAsyncTask-$id",
-                "Didn't found PoW: $finalHash in $searchRange in time ${ProofOfWorkActivity.measureFormat.format(
+        val result = if (finalHash != null) {
+            Timber.d(
+                "[${Thread.currentThread().name}] Found PoW: $finalHash in ${ProofOfWorkActivity.measureFormat.format(
                     time
                 )}"
             )
-            MiningResult.NotFound
+            MiningResult.Success(id, finalHash!!, time)
+        } else {
+            Timber.d(
+                "[${Thread.currentThread().name}] Didn't found PoW: $finalHash in $searchRange in time ${ProofOfWorkActivity.measureFormat.format(
+                    time
+                )}"
+            )
+            MiningResult.NotFound(id)
         }
 
-
-    }
-
-    override fun onPostExecute(result: MiningResult) {
-        super.onPostExecute(result)
         onComplete(result)
-        updater.interrupt()
     }
 
-    override fun onCancelled() {
-        super.onCancelled()
-        Log.d("PoWAsyncTask-$id", " Cancelled !")
-    }
 }

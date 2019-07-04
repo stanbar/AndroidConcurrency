@@ -1,10 +1,10 @@
-package com.stasbar.concurrency.masterthesis.proofofwork
+package com.stasbar.concurrency.benchmarks.proofofwork
 
 import android.util.Log
-import com.stasbar.concurrency.masterthesis.JobUpdate
-import com.stasbar.concurrency.masterthesis.MiningResult
-import com.stasbar.concurrency.masterthesis.ProofOfWorkActivity
-import com.stasbar.concurrency.masterthesis.calculateHashOf
+import com.stasbar.concurrency.benchmarks.JobUpdate
+import com.stasbar.concurrency.benchmarks.MiningResult
+import com.stasbar.concurrency.benchmarks.ProofOfWorkActivity
+import com.stasbar.concurrency.benchmarks.calculateHashOf
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -26,9 +26,9 @@ class PoWCoroutineExecutor(
     val parent = SupervisorJob()
 
     override fun execute() = runBlocking<Unit>(parent) {
-        var from = ULong.MIN_VALUE
+        var from: ULong = searchStart
 
-        List(jobSize) {
+        List(jobSize.toInt()) {
             worker(executorCoroutineDispatcher, it,
                 PoWParams(ULongRange(from, from + calculationsPerWorker), "stasbar", difficulty),
                 onUpdate,
@@ -79,7 +79,7 @@ class PoWCoroutineExecutor(
 
             val result = if (finalHash != null) {
                 Log.d("PoWCoroutine-$id", "Found PoW: $finalHash in ${ProofOfWorkActivity.measureFormat.format(time)}")
-                MiningResult.Success(finalHash!!, time)
+                MiningResult.Success(id, finalHash!!, time)
             } else {
                 Log.d(
                     "PoWCoroutine-$id",
@@ -87,11 +87,11 @@ class PoWCoroutineExecutor(
                         time
                     )}"
                 )
-                MiningResult.NotFound
+                MiningResult.NotFound(id)
             }
             onComplete(result)
         } catch (e: PoWAlreadyFoundException) {
-            onComplete(MiningResult.Cancelled)
+            onComplete(MiningResult.Cancelled(id))
         }
     }
 

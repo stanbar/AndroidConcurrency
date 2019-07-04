@@ -1,11 +1,12 @@
-package com.stasbar.concurrency.masterthesis.proofofwork
+package com.stasbar.concurrency.benchmarks.proofofwork
 
+import android.os.AsyncTask
 import android.util.Log
-import com.stasbar.concurrency.masterthesis.*
+import com.stasbar.concurrency.benchmarks.*
 import kotlin.system.measureTimeMillis
 
 @ExperimentalUnsignedTypes
-class PoWThreadExecutor(
+class PoWAsyncTaskExecutor(
     difficulty: UInt,
     poolSize: UInt,
     jobSize: UInt,
@@ -13,58 +14,60 @@ class PoWThreadExecutor(
     val onComplete: (MiningResult) -> Unit
 ) : PoWExecutor(difficulty, poolSize, jobSize) {
 
-    private val tasks = mutableListOf<Runnable>()
+    private val asyncTasks = mutableListOf<ProofOfWorkAsyncTask>()
 
     init {
-        var from = ULong.MIN_VALUE
+        var from: ULong = searchStart
         repeat(jobSize.toInt()) {
-            val task = PoWThread(
+            val task = ProofOfWorkAsyncTask(
                 it,
                 PoWParams(ULongRange(from, from + calculationsPerWorker), "stasbar", difficulty),
                 onUpdate,
                 { result ->
                     onComplete(result)
-                    threadPool.shutdownNow()
+                    if (result is MiningResult.Success) cancel()
                 })
-            tasks.add(task)
+            asyncTasks.add(task)
             from += calculationsPerWorker
         }
     }
 
     override fun execute() {
-        tasks.forEach { threadPool.execute(it) }
+        asyncTasks.forEach { it.executeOnExecutor(threadPool) }
     }
 
     override fun cancel() {
-        threadPool.shutdownNow()
+        asyncTasks.forEach { it.cancel(true) }
     }
 }
 
+class PoWAlreadyFoundException : Exception()
+
 @ExperimentalUnsignedTypes
-private class PoWThread(
+private class ProofOfWorkAsyncTask(
     val id: Int,
     val arguments: PoWParams,
     val onUpdate: (JobUpdate) -> Unit,
     val onComplete: (MiningResult) -> Unit
-) : Runnable {
+) :
+    AsyncTask<Any, ULong, MiningResult>() {
 
-    //TODO include in analisis
-    private lateinit var updater: Updater
+    lateinit var updater: Updater
 
-    override fun run() {
+    override fun doInBackground(vararg params: Any): MiningResult {
         val (searchRange, data, difficulty) = arguments
         val searchLength = searchRange.last - searchRange.first
         updater = Updater(id, searchLength, onUpdate)
         updater.start()
 
-        Log.d(Thread.currentThread().name, "Thread name: ${Thread.currentThread().name} searchRange: $searchRange")
+        Log.d("ProofOfWorkAsyncTask", "Thread name: ${Thread.currentThread().name} searchRange: $searchRange")
         var finalHash: String? = null
         val time = try {
             measureTimeMillis {
                 val target = String(CharArray(difficulty.toInt())).replace('\u0000', '0')
                 for (testNonce in searchRange) {
                     // Stop searching if pow is already found
-                    if (Thread.currentThread().isInterrupted) throw PoWAlreadyFoundException()
+                    if (isCancelled) throw PoWAlreadyFoundException()
 
                     val hash = calculateHashOf(data, testNonce)
                     if (hash.substring(0, difficulty.toInt()) == target) {
@@ -75,20 +78,15 @@ private class PoWThread(
                 }
             }
         } catch (e: PoWAlreadyFoundException) {
-            onComplete(MiningResult.NotFound(id))
-            Log.e(Thread.currentThread().name, "cancelled asyck task", e)
-            return
+            return MiningResult.NotFound(id)
         }
 
-        val result = if (finalHash != null) {
-            Log.d(
-                Thread.currentThread().name,
-                "Found PoW: $finalHash in ${ProofOfWorkActivity.measureFormat.format(time)}"
-            )
+        return if (finalHash != null) {
+            Log.d("PoWAsyncTask-$id", "Found PoW: $finalHash in ${ProofOfWorkActivity.measureFormat.format(time)}")
             MiningResult.Success(id, finalHash!!, time)
         } else {
             Log.d(
-                Thread.currentThread().name,
+                "PoWAsyncTask-$id",
                 "Didn't found PoW: $finalHash in $searchRange in time ${ProofOfWorkActivity.measureFormat.format(
                     time
                 )}"
@@ -96,7 +94,17 @@ private class PoWThread(
             MiningResult.NotFound(id)
         }
 
-        onComplete(result)
+
     }
 
+    override fun onPostExecute(result: MiningResult) {
+        super.onPostExecute(result)
+        onComplete(result)
+        updater.interrupt()
+    }
+
+    override fun onCancelled() {
+        super.onCancelled()
+        Log.d("PoWAsyncTask-$id", " Cancelled !")
+    }
 }

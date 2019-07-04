@@ -1,6 +1,6 @@
-package com.stasbar.concurrency.masterthesis
+package com.stasbar.concurrency.benchmarks
 
-import android.util.Log
+import timber.log.Timber
 
 @ExperimentalUnsignedTypes
 class Updater(
@@ -17,14 +17,10 @@ class Updater(
             try {
                 sleep(1000)
             } catch (e: InterruptedException) {
-                Log.d("Updater", "InterruptedException")
+                Timber.d(e)
             }
 
             onUpdate(JobUpdate(id, currentNonce, searchLength))
-
-//                    val progress = (currentNonce.toDouble() / searchLength.toDouble() * 100).toInt()
-//                    progressBar.post { progressBar.progress = progress }
-//                    textView.post { textView.text = "$currentNonce/$searchLength[$progress]" }
         }
     }
 }
