@@ -13,8 +13,10 @@ import com.stasbar.concurrency.contentResolver.ContentResolverActivity
 import com.stasbar.concurrency.database.DBActivity
 import com.stasbar.concurrency.java_concurrency.JavaConcurencyActivity
 import com.stasbar.concurrency.java_concurrency.ProducerConsumerActivity
+import com.stasbar.concurrency.looper.LooperActivity
 import com.stasbar.concurrency.multiprocess.ProcessOneActivity
 import com.stasbar.concurrency.multiprocess.ProcessTwoActivity
+import com.stasbar.concurrency.piping.PipeActivity
 import com.stasbar.concurrency.started.StartedServicesActivity
 import com.stasbar.concurrency.threadsocket.LocalSocketActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,11 +36,13 @@ class MainActivity : AppCompatActivity() {
         buttonProducerConsumer.setOnClickListener{ startActivity(Intent(this, ProducerConsumerActivity::class.java)) }
         buttonDatabase.setOnClickListener{ startActivity(Intent(this, DBActivity::class.java)) }
         buttonContentResolver.setOnClickListener{ startActivity(Intent(this, ContentResolverActivity::class.java)) }
-        buttonContentProviderSync.setOnClickListener{ startActivity(Intent(this, ContactProviderSyncActivity::class.java)) }
-        buttonContentProviderAsync.setOnClickListener{ startActivity(Intent(this, ContactProviderAsyncActivity::class.java)) }
+        buttonContentProviderSync.setOnClickListener { startActivity<ContactProviderSyncActivity>() }
+        buttonContentProviderAsync.setOnClickListener { startActivity<ContactProviderAsyncActivity>() }
         buttonLocalSocket.setOnClickListener { startActivity<LocalSocketActivity>() }
         buttonMainProcess.setOnClickListener { startActivity<ProcessOneActivity>() }
         buttonSecondProcess.setOnClickListener { startActivity<ProcessTwoActivity>() }
         buttonProofOfWork.setOnClickListener { startActivity<ProofOfWorkActivity>() }
+        buttonPiping.setOnClickListener { startActivity<PipeActivity>() }
+        buttonLooper.setOnClickListener { startActivity<LooperActivity>() }
     }
 }
