@@ -7,14 +7,14 @@
     tools:context=".looper.LooperActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnLooperCommunication"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Button"
+        android:text="Looper Communication"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,8 +25,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Idle Handler"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        android:text="Start Idle Handler"
+        app:layout_constraintEnd_toEndOf="@+id/btnLooperCommunication"
+        app:layout_constraintStart_toStartOf="@+id/btnLooperCommunication"
+        app:layout_constraintTop_toBottomOf="@+id/btnLooperCommunication" />
+
+    <Button
+        android:id="@+id/btnWorker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="START WORKER THREAD"
+        app:layout_constraintEnd_toEndOf="@+id/btnIdle"
+        app:layout_constraintStart_toStartOf="@+id/btnIdle"
+        app:layout_constraintTop_toBottomOf="@+id/btnIdle" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btnWorker"
+        app:layout_constraintEnd_toStartOf="@+id/btnWorker"
+        app:layout_constraintTop_toTopOf="@+id/btnWorker" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnWorker"
+        app:layout_constraintStart_toEndOf="@+id/btnWorker"
+        app:layout_constraintTop_toTopOf="@+id/btnWorker" />
 </androidx.constraintlayout.widget.ConstraintLayout>

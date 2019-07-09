@@ -5,9 +5,9 @@ import android.os.Looper
 import android.os.MessageQueue
 import timber.log.Timber
 
-class ConsumeAndQuitThread : Thread("ConsumeAndQuitThread"), MessageQueue.IdleHandler {
+class ConsumeAndQuitThread(number: Int) : Thread("ConsumeAndQuitThread-$number"), MessageQueue.IdleHandler {
 
-    lateinit var consumerHandler: Handler
+    var consumerHandler: Handler? = null
 
     private var isFirstIdle = true
     override fun queueIdle(): Boolean {
@@ -15,7 +15,7 @@ class ConsumeAndQuitThread : Thread("ConsumeAndQuitThread"), MessageQueue.IdleHa
             isFirstIdle = false
             return true
         }
-        Timber.d("MessageQueue is in idle, it's going to quit now. Bye !")
+        Timber.tag(Thread.currentThread().name).d("MessageQueue is in idle, it's going to quit now. Bye !")
         Looper.myLooper()?.quit()
         return false
     }
@@ -23,7 +23,7 @@ class ConsumeAndQuitThread : Thread("ConsumeAndQuitThread"), MessageQueue.IdleHa
     override fun run() {
         Looper.prepare()
         consumerHandler = Handler { message ->
-            Timber.d("ConsumeHandler ${message.what}")
+            Timber.tag(Thread.currentThread().name).d("processing message: ${message.what}")
             sleep(100)
             false
         }
@@ -33,6 +33,7 @@ class ConsumeAndQuitThread : Thread("ConsumeAndQuitThread"), MessageQueue.IdleHa
     }
 
     fun enqueueData(what: Int) {
-        consumerHandler.sendEmptyMessage(what)
+        consumerHandler?.sendEmptyMessage(what)
+        Timber.tag(Thread.currentThread().name).d("Sending message to handler")
     }
 }

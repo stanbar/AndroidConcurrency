@@ -22,7 +22,7 @@ class LooperThread : Thread() {
         val idleHandler = object : MessageQueue.IdleHandler {
             var invocations = 0
             override fun queueIdle(): Boolean {
-                Timber.d("[${invocations++}]Dispatched in idle handler")
+                Timber.d("[${invocations++}] Dispatched in idle handler")
                 return invocations < 10
             }
 
@@ -33,10 +33,10 @@ class LooperThread : Thread() {
     }
 
     private fun doLongRunningOperation(message: String) {
-        Handler(Looper.getMainLooper()).post {
-            Timber.d("Invoked from MainLooper in thread: ${Thread.currentThread().name} with message $message")
-        }
+        Timber.tag(Thread.currentThread().name).d("Send from LooperThread.Looper  with message $message")
 
-        Timber.d("Invoked from LooperThread in thread: ${Thread.currentThread().name} with message $message")
+        Handler(Looper.getMainLooper()).post {
+            Timber.tag(Thread.currentThread().name).d("Invoked from MainLooper with message $message")
+        }
     }
 }

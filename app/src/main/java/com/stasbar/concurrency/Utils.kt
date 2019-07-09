@@ -6,6 +6,7 @@ import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -39,6 +40,15 @@ object Utils {
         }
     }
 }
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.GONE
+}
+
 
 fun EditText.onTextChanged(textChanged: (CharSequence, Int, Int, Int) -> Unit) {
     addTextChangedListener(object : TextWatcher {
