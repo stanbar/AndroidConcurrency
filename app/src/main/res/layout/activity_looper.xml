@@ -59,4 +59,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/btnWorker"
         app:layout_constraintStart_toEndOf="@+id/btnWorker"
         app:layout_constraintTop_toTopOf="@+id/btnWorker" />
+
+    <Button
+        android:id="@+id/btnLogLooperQueue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="LOG LOOPER QUEUE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnWorker" />
 </androidx.constraintlayout.widget.ConstraintLayout>
