@@ -11,6 +11,7 @@ import com.stasbar.concurrency.contentProvider.async.ContactProviderAsyncActivit
 import com.stasbar.concurrency.contentProvider.sync.ContactProviderSyncActivity
 import com.stasbar.concurrency.contentResolver.ContentResolverActivity
 import com.stasbar.concurrency.database.DBActivity
+import com.stasbar.concurrency.executor.ExecutorActivity
 import com.stasbar.concurrency.java_concurrency.JavaConcurencyActivity
 import com.stasbar.concurrency.java_concurrency.ProducerConsumerActivity
 import com.stasbar.concurrency.looper.LooperActivity
@@ -30,12 +31,19 @@ class MainActivity : AppCompatActivity() {
         buttonStartedImageDownloader.setOnClickListener { startActivity(Intent(this, DownloadActivity::class.java)) }
         buttonStartedServices.setOnClickListener { startActivity(Intent(this, StartedServicesActivity::class.java)) }
         buttonBoundedLocalService.setOnClickListener { startActivity(Intent(this, BoundLocalActivity::class.java)) }
-        buttonBoundedViaMessenger.setOnClickListener { startActivity(Intent(this, BoundViaMessengerActivity::class.java))}
-        buttonCache.setOnClickListener { startActivity(Intent(this, CacheActivity::class.java))}
-        buttonJavaConcurrency.setOnClickListener{ startActivity(Intent(this, JavaConcurencyActivity::class.java)) }
-        buttonProducerConsumer.setOnClickListener{ startActivity(Intent(this, ProducerConsumerActivity::class.java)) }
-        buttonDatabase.setOnClickListener{ startActivity(Intent(this, DBActivity::class.java)) }
-        buttonContentResolver.setOnClickListener{ startActivity(Intent(this, ContentResolverActivity::class.java)) }
+        buttonBoundedViaMessenger.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    BoundViaMessengerActivity::class.java
+                )
+            )
+        }
+        buttonCache.setOnClickListener { startActivity(Intent(this, CacheActivity::class.java)) }
+        buttonJavaConcurrency.setOnClickListener { startActivity(Intent(this, JavaConcurencyActivity::class.java)) }
+        buttonProducerConsumer.setOnClickListener { startActivity(Intent(this, ProducerConsumerActivity::class.java)) }
+        buttonDatabase.setOnClickListener { startActivity(Intent(this, DBActivity::class.java)) }
+        buttonContentResolver.setOnClickListener { startActivity(Intent(this, ContentResolverActivity::class.java)) }
         buttonContentProviderSync.setOnClickListener { startActivity<ContactProviderSyncActivity>() }
         buttonContentProviderAsync.setOnClickListener { startActivity<ContactProviderAsyncActivity>() }
         buttonLocalSocket.setOnClickListener { startActivity<LocalSocketActivity>() }
@@ -44,5 +52,6 @@ class MainActivity : AppCompatActivity() {
         buttonProofOfWork.setOnClickListener { startActivity<ProofOfWorkActivity>() }
         buttonPiping.setOnClickListener { startActivity<PipeActivity>() }
         buttonLooper.setOnClickListener { startActivity<LooperActivity>() }
+        buttonExecutor.setOnClickListener { startActivity<ExecutorActivity>() }
     }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".executor.ExecutorActivity">
+
+    <Button
+        android:id="@+id/btnStartPreloaded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Preloaded" />
+
+    <Button
+        android:id="@+id/btnStartZeroCoreSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zero core size" />
+
+    <Button
+        android:id="@+id/btnStartSingleThreadExecutor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Single thread executor" />
+
+    <Button
+        android:id="@+id/btnStartSingleThreadExecutorCallable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Single thread executor callable" />
+
+    <Button
+        android:id="@+id/btnStartDownloadImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start downloading images" />
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/imagesContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap">
+
+    </com.google.android.flexbox.FlexboxLayout>
+</LinearLayout>

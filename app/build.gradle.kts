@@ -25,7 +25,7 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
-        setTargetCompatibility(JavaVersion.VERSION_1_8)
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 dependencies {
@@ -38,6 +38,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("org.jetbrains.anko:anko:0.10.1")
     implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.google.android:flexbox:1.1.0")
 
     testImplementation("junit:junit:4.12")
     testImplementation("com.natpryce:hamkrest:1.7.0.0")

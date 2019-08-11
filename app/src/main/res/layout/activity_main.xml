@@ -239,5 +239,19 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="Looper Activity" />
+
+        <!-- Executor -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Executor"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+        <Button
+            android:id="@+id/buttonExecutor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Executor Activity" />
     </LinearLayout>
 </ScrollView>

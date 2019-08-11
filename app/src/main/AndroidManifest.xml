@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".looper.LooperActivity"></activity>
+        <activity android:name=".executor.ExecutorActivity"></activity>
+        <activity android:name=".looper.LooperActivity" />
         <activity android:name=".piping.PipeActivity" />
         <activity android:name=".superpi.SuperPiActivity" />
         <activity android:name=".threadsocket.LocalSocketActivity" />
