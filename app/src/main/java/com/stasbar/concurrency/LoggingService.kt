@@ -32,8 +32,4 @@ class LoggingService : IntentService("LoggingService") {
         Log.i("Logging",logMessage)
 
     }
-
-
-
-
 }
