@@ -25,8 +25,8 @@ class DeferredDownloadService : IntentService("DeferredDownloadService") {
         val PACKAGE_NAME_KEY = "package_name"
     }
 
-    override fun onHandleIntent(intent: Intent) {
-        val url = intent.getStringExtra(URL_KEY)
+    override fun onHandleIntent(intent: Intent?) {
+        val url = intent!!.getStringExtra(URL_KEY)
 
         saveImageIntoFile(url)
 

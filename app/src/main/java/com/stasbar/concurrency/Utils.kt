@@ -30,12 +30,12 @@ object Utils {
     }
 
     fun hideKeyboard(activity: FragmentActivity) {
-        if (activity.currentFocus != null && activity.currentFocus.windowToken != null) {
+        if (activity.currentFocus != null && activity.currentFocus?.windowToken != null) {
             val inputMethodManager = activity.getSystemService(
                 Activity.INPUT_METHOD_SERVICE
             ) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                activity.currentFocus.windowToken, 0
+                activity.currentFocus?.windowToken, 0
             )
         }
     }

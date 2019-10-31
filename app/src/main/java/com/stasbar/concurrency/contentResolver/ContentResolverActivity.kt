@@ -39,7 +39,8 @@ class ContentResolverActivity : AppCompatActivity() {
         val contacts = ArrayList<String>()
         val columns = arrayOf(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)
         val cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,
-                columns, null, null, null)
+            columns, null, null, null
+        )!!
 
 
         if (cursor.moveToFirst()) {

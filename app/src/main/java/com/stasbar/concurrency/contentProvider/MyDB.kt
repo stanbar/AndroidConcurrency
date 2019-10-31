@@ -1,15 +1,12 @@
 package com.stasbar.concurrency.contentProvider
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.io.InputStream
 
 /**
  * Created by stasbar on 14.02.2018
@@ -48,7 +45,7 @@ class MyDB(context : Context) : SQLiteOpenHelper(context,DB_NAME,null,DB_VERSION
         try {
             outputStream.use {
                 assetManager.open(name).use {
-                    it.copyTo(outputStream);
+                    it.copyTo(outputStream)
                 }
             }
 
@@ -77,7 +74,8 @@ class MyDB(context : Context) : SQLiteOpenHelper(context,DB_NAME,null,DB_VERSION
                 "${FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE} TEXT )"
 
 
-        private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXIST ${FeedReaderContract.FeedEntry.TABLE_NAME}"
+        private const val SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS ${FeedReaderContract.FeedEntry.TABLE_NAME}"
     }
 
 

@@ -63,7 +63,7 @@ class DBActivity : AppCompatActivity() {
         val selection: String? = null
         val selectionArgs: Array<String?>? = null
         val sortOrder: String? = null
-        return cr.query(uri, arrayOf("_id", "name"), selection, selectionArgs, sortOrder)
+        return cr.query(uri, arrayOf("_id", "name"), selection, selectionArgs, sortOrder)!!
     }
 
     private fun insertArtists() {

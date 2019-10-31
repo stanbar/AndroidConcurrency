@@ -22,8 +22,8 @@ class DownloadIntentService : IntentService("DownloadIntentService") {
         val PACKAGE_NAME_KEY = "package_name"
     }
 
-    override fun onHandleIntent(intent: Intent) {
-        val url = intent.getStringExtra(URL_KEY)
+    override fun onHandleIntent(intent: Intent?) {
+        val url = intent!!.getStringExtra(URL_KEY)
         val packageName = intent.getStringExtra(PACKAGE_NAME_KEY)
 
         saveImageIntoFile(url)

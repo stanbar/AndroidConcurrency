@@ -43,7 +43,7 @@ class ProducerConsumerActivity : LoggableActivity() {
             Looper.prepare()
             producerHandler = Handler()
             countDownLatch.countDown()
-            Looper.myLooper().setMessageLogging(LogPrinter(Log.DEBUG, "ProductionLooper"))
+            Looper.myLooper()?.setMessageLogging(LogPrinter(Log.DEBUG, "ProductionLooper"))
             Looper.loop()
         }
         thread.start()
@@ -52,11 +52,9 @@ class ProducerConsumerActivity : LoggableActivity() {
 
     private fun startProducing() {
         countDownLatch.await()
-        val producer = Thread({
+        val producer = Thread {
             val rand = Random()
-
             while (true) {
-
                 producerHandler.post {
                     val transcation = Transaction(
                         UUID.randomUUID().toString(),
@@ -65,10 +63,9 @@ class ProducerConsumerActivity : LoggableActivity() {
                     )
                     queue.addLast(transcation)
                 }
-
                 Thread.sleep(1000)
             }
-        })
+        }
 
         producer.start()
 
