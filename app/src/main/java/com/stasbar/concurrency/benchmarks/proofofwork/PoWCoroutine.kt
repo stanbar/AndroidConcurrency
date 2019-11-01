@@ -8,6 +8,7 @@ import com.stasbar.concurrency.benchmarks.calculateHashOf
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
+import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.system.measureTimeMillis
 
@@ -58,7 +59,8 @@ class PoWCoroutineExecutor(
 
         val updateChannel = Channel<Unit>(Channel.CONFLATED)
         updater(id, searchLength, onUpdate, updateChannel)
-        Log.d("PoWCoroutine-$id", "Thread name: ${Thread.currentThread().name} searchRange: $searchRange")
+        Timber.tag("PoWCoroutine-$id")
+            .d("Thread name: ${Thread.currentThread().name} searchRange: $searchRange")
 
         var finalHash: String? = null
         try {
@@ -78,7 +80,10 @@ class PoWCoroutineExecutor(
             }
 
             val result = if (finalHash != null) {
-                Log.d("PoWCoroutine-$id", "Found PoW: $finalHash in ${ProofOfWorkActivity.measureFormat.format(time)}")
+                Log.d(
+                    "PoWCoroutine-$id",
+                    "Found PoW: $finalHash in ${ProofOfWorkActivity.measureFormat.format(time)}"
+                )
                 MiningResult.Success(id, finalHash!!, time)
             } else {
                 Log.d(
